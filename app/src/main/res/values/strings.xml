@@ -1,0 +1,49 @@
+<resources>
+    <string name="app_name">Quizrr</string>
+
+    <string name="FCM_PRE">com.saneesh.psc_kerala.fcm_pref</string>
+    <string name="FCM_TOKEN">com.saneesh.psc_kerala.fcm_token</string>
+
+    <string name="APPID">ca-app-pub-5847774043131331~5175038311</string>
+    <string name="BANNERID">ca-app-pub-5847774043131331/2904098193</string>
+    <string name="INTERTITIAID">ca-app-pub-5847774043131331/2169185730</string>
+
+    <string name="kerala">കേരളം</string>
+    <string name="india">ഇന്ത്യ </string>
+    <string name="world">ലോകം</string>
+
+    <string name="geography">ഭൂമിശാസ്ത്രം</string>
+    <string name="history">ചരിത്രം</string>
+    <string name="movies">ചലച്ചിത്രം</string>
+    <string name="sports">കായികം</string>
+    <string name="computerScience">കമ്പ്യൂട്ടർ സയൻസ്</string>
+    <string name="maths">ഗണിതം</string>
+    <string name="literature">സാഹിത്യം</string>
+    <string name="science">ശാസ്ത്രം</string>
+
+
+    <string-array name="categories">
+
+
+        <item name="geography">ഭൂമിശാസ്ത്രം</item>
+        <item name="history">ചരിത്രം</item>
+        <item name="india">ഇന്ത്യ </item>
+        <item name="movies">ചലച്ചിത്രം</item>
+        <item name="science">ശാസ്ത്രം</item>
+        <item name="sports">കായികം</item>
+        <item name="world">ലോകം</item>
+        <item name="literature">സാഹിത്യം</item>
+        <item name="kerala">കേരളം</item>
+        <item name="maths">ഗണിതം</item>
+
+    </string-array>
+
+    <string name="title_activity_base">BaseActivity</string>
+
+    <string name="title_activity_pre_home">PreHomeActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="title_activity_sample">SAmpleActivity</string>
+
+
+</resources>

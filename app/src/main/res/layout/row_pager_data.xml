@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#906e6e6e"
+    >
+
+    <TextView
+        android:id="@+id/txtViewTokenNo"
+        android:layout_width="35dp"
+        android:layout_height="50dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/pager_txt_bg"
+        android:text="10"
+        android:textColor="@color/white_light"
+        android:textStyle="bold"
+        android:textSize="14sp"
+        android:gravity="center"
+        />
+
+</RelativeLayout>

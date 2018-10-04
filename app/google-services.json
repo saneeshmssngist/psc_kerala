@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "233610102115",
+    "firebase_url": "https://quizrr-dd785.firebaseio.com",
+    "project_id": "quizrr-dd785",
+    "storage_bucket": "quizrr-dd785.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:233610102115:android:307b64813ad5b657",
+        "android_client_info": {
+          "package_name": "com.saneesh.psc_kerala"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "233610102115-9a7uvh4hutnajiji35p70ehi5dl2puql.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.saneesh.psc_kerala",
+            "certificate_hash": "fcb408ead89713f4a2159a689856ea9e90b36f36"
+          }
+        },
+        {
+          "client_id": "233610102115-ak889te4dftmbj3083eg4kqa7im2u1fc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAayhoO9h9xnksAETgWJU4faB0fOUONz3k"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "233610102115-ak889te4dftmbj3083eg4kqa7im2u1fc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
