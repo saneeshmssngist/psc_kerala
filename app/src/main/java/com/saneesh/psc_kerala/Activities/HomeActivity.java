@@ -15,10 +15,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.saneesh.psc_kerala.Base;
 import com.saneesh.psc_kerala.DataManager;
 import com.saneesh.psc_kerala.Interfaces.RetrofitCallBack;
@@ -29,6 +32,9 @@ import com.saneesh.psc_kerala.RoomDatabaseRoom;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import io.fabric.sdk.android.Fabric;
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -43,10 +49,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     public static RoomDatabaseRoom INSTANCE;
 
     private SharedPreferences pref;
-    private ArrayList<QuestionsModel> questionDatasArray;
+    private ArrayList<QuestionsModel> questionModelDatasArray;
+    private ArrayList<QuizTable> questionTableDatasArray;
     private boolean doubleBackToExitPressedOnce = false;
 
     private AdView adMobView;
+    private String questionDatas = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,10 +63,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         context = this;
         Base.setStatusBarGradiant(this);
+        Fabric.with(this, new Crashlytics());
 
-        setUpAdmob();
+       // setUpAdmob();
         //message topic ...
         FirebaseMessaging.getInstance().subscribeToTopic("fcm_message");
+        pref = getSharedPreferences("ActivityPREF", Context.MODE_PRIVATE);
 
         if (INSTANCE == null) {
             INSTANCE = Room.databaseBuilder(getApplicationContext(), RoomDatabaseRoom.class, "quizerrDb").allowMainThreadQueries().build();
@@ -73,7 +83,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private void setUpAdmob() {
 
         //admob sync..
-        MobileAds.initialize(this, getResources().getString(R.string.APPID));
+//        MobileAds.initialize(this, getResources().getString(R.string.APPID));
 //
 //        adMobView = (AdView) findViewById(R.id.adMobView);
 //        adMobView.loadAd(new AdRequest.Builder().build());
@@ -82,16 +92,13 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     private void setAllDatas() {
 
-        pref = getSharedPreferences("ActivityPREF", Context.MODE_PRIVATE);
         if (pref.getBoolean("quiz_executed", false)) {
             return;
 
         } else {
             setDatas();
         }
-
     }
-
 
     public void setDatas() {
 
@@ -102,7 +109,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void Success(ArrayList<QuestionsModel> questionsModels) {
 
-                questionDatasArray = questionsModels;
+                questionModelDatasArray = questionsModels;
                 setQuestionDatas();
                 //  Toast.makeText(SAmple.this,status,Toast.LENGTH_SHORT).show();
             }
@@ -126,17 +133,24 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             protected Void doInBackground(Void... params) {
 
-                for (int i = 0; i < questionDatasArray.size(); i++) {
-                    QuizTable table = new QuizTable();
-                    table.setQuestion(questionDatasArray.get(i).getQuestion());
-                    table.setOption1(questionDatasArray.get(i).getOption1());
-                    table.setOption2(questionDatasArray.get(i).getOption2());
-                    table.setOption3(questionDatasArray.get(i).getOption3());
-                    table.setOption4(questionDatasArray.get(i).getOption4());
-                    table.setAnswer(questionDatasArray.get(i).getAnswer());
-                    table.setFlag(questionDatasArray.get(i).getStatus());
 
-                    HomeActivity.INSTANCE.myDao().addQuizQuestions(table);
+                questionDatas = new Gson().toJson(questionModelDatasArray);
+
+                questionTableDatasArray = new Gson().fromJson(questionDatas, new TypeToken<List<QuizTable>>() {
+                }.getType());
+
+
+                for (int i = 0; i < questionTableDatasArray.size(); i++) {
+//                    QuizTable table = new QuizTable();
+//                    table.setQuestion(questionDatasArray.get(i).getQuestion());
+//                    table.setOption1(questionDatasArray.get(i).getOption1());
+//                    table.setOption2(questionDatasArray.get(i).getOption2());
+//                    table.setOption3(questionDatasArray.get(i).getOption3());
+//                    table.setOption4(questionDatasArray.get(i).getOption4());
+//                    table.setAnswer(questionDatasArray.get(i).getAnswer());
+//                    table.setFlag(questionDatasArray.get(i).getStatus());
+
+                    HomeActivity.INSTANCE.myDao().addQuizQuestions(questionTableDatasArray.get(i));
                 }
                 return null;
             }
@@ -194,7 +208,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
             switch (id) {
                 case R.id.layoutGame:
-                    startActivity(new Intent(this, GameHomeActivity.class));
+                    startActivity(new Intent(this, GameActivity.class));
                     break;
                 case R.id.layoutRead:
                     startActivity(new Intent(this, GeneralHomeActivity.class));
@@ -219,7 +233,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     private void shareAPp() {
 
-        pref = getSharedPreferences("ActivityPREF", Context.MODE_PRIVATE);
 
         if (pref.getString("shareLink", "false").equals("false")) {
 

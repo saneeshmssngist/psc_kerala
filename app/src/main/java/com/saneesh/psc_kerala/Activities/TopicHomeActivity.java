@@ -61,6 +61,7 @@ public class TopicHomeActivity extends AppCompatActivity {
 
         adMobView = (AdView) findViewById(R.id.adMobView);
         adMobView.loadAd(new AdRequest.Builder().build());
+
     }
 
     private void getViews() {
@@ -102,9 +103,6 @@ public class TopicHomeActivity extends AppCompatActivity {
                 }
                 @Override
                 public void Failure(String error) {
-
-                    avilayoutProgress.smoothToHide();
-                    layoutProgress.setVisibility(View.GONE);
 
                     Toast.makeText(TopicHomeActivity.this,"Network connection needed !!", Toast.LENGTH_SHORT).show();
                 }

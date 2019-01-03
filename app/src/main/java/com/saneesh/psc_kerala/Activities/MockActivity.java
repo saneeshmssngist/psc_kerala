@@ -34,29 +34,33 @@ public class MockActivity extends AppCompatActivity implements View.OnClickListe
     private TextView txtViewQuestion, txtViewOption1, txtViewOption2, txtViewOption3, txtViewOption4;
 
     private int questionNumber = -1;
-    private List<QuizTable> questionDatasArray;
+    private String questionTot;
+    private List<QuizTable> questionDatasArray = new ArrayList<>();
     private ArrayList<String> answersArray;
     private QuizTable questionData;
     private LinearLayout layoutOption1, layoutOption2, layoutOption3, layoutOption4;
     private LinearLayout layoutButton;
+    private List<String> dupIds;
 
     private int myCoins, count;
 
     private String[] quizItems;
+    private int quizItemsCount = 0;
 
     private String categoryType, questionsCount;
     private TextView txtViewQuestionNumber, txtTotalQns;
 
     private AdView adMobView;
     private InterstitialAd interstitialAd;
+    private String itemNo = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mock);
 
-        categoryType = getIntent().getStringExtra("category");
-        questionsCount = getIntent().getStringExtra("questions");
+        quizItems = Session.getSharedData("quizItems").split(",");
+        questionTot = getIntent().getStringExtra("questions");
 
         Session.getSession(this);
 
@@ -119,6 +123,7 @@ public class MockActivity extends AppCompatActivity implements View.OnClickListe
         layoutOption4 = (LinearLayout) findViewById(R.id.layoutOption4);
         txtViewQuestionNumber = (TextView) findViewById(R.id.txtViewQuestionNumber);
         txtTotalQns = (TextView) findViewById(R.id.txtTotalQns);
+        dupIds = new ArrayList<>();
 
         layoutButton = (LinearLayout) findViewById(R.id.layoutButton);
 
@@ -140,84 +145,114 @@ public class MockActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    private void setData() {
+    public void setData() {
 
-        questionDatasArray = HomeActivity.INSTANCE.myDao().getMockData(categoryType, questionsCount);
+       // txtViewCoins.setText(Session.getSharedData("myCoins"));
 
-        if(questionDatasArray.size() != 0) {
-            setQuestionDatas();
+        if (quizItemsCount != quizItems.length) {
+            itemNo = quizItems[quizItemsCount];
+            quizItemsCount++;
+            setQuestionDatas(itemNo);
+        } else {
+            quizItemsCount = 0;
+            itemNo = quizItems[quizItemsCount];
+            setQuestionDatas(itemNo);
+        }
+
+    }
+
+    public void setQuestionDatas(String itemNo) {
+
+        questionData = HomeActivity.INSTANCE.myDao().getQuizQuestions(itemNo);
+
+        //check duplicate data
+        if(!checkDupdatas(questionData.getId())) {
+            //increase question number .
+            questionNumber++;
+
+            if (!questionTot.equals(String.valueOf(questionNumber))) {
+                questionDatasArray.add(questionData);
+                dupIds.add(String.valueOf(questionData.getId()));
+
+            } else {
+                Toast.makeText(MockActivity.this, "Test Ended", Toast.LENGTH_SHORT).show();
+
+                setupReview();
+                return;
+            }
+
+            questionData = questionDatasArray.get(questionNumber);
+
+            //set Question number.
+            txtViewQuestionNumber.setText("Q. " + String.valueOf(questionNumber + 1) + " /");
+
+            //clearing all datas .
+            resetAllDatas();
+
+            final Animation in = new AlphaAnimation(0.0f, 1.0f);
+            in.setDuration(500);
+
+            final Animation out = new AlphaAnimation(1.0f, 0.0f);
+            out.setDuration(500);
+
+            txtViewQuestion.startAnimation(out);
+            txtViewOption1.startAnimation(out);
+            txtViewOption2.startAnimation(out);
+            txtViewOption3.startAnimation(out);
+            txtViewOption4.startAnimation(out);
+            out.setAnimationListener(new Animation.AnimationListener() {
+
+                @Override
+                public void onAnimationStart(Animation animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    txtViewQuestion.setText(questionData.getQuestion());
+                    txtViewQuestion.startAnimation(in);
+
+                    txtViewOption1.setText(questionData.getOption1());
+                    txtViewOption1.startAnimation(in);
+
+                    txtViewOption2.setText(questionData.getOption2());
+                    txtViewOption2.startAnimation(in);
+
+                    txtViewOption3.setText(questionData.getOption3());
+                    txtViewOption3.startAnimation(in);
+
+                    txtViewOption4.setText(questionData.getOption4());
+                    txtViewOption4.startAnimation(in);
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            });
+
+
+            txtViewOption1.setText(questionData.getOption1());
+            txtViewOption2.setText(questionData.getOption2());
+            txtViewOption3.setText(questionData.getOption3());
+            txtViewOption4.setText(questionData.getOption4());
+
+        }
+        else
+        {
+           setQuestionDatas(itemNo);
         }
     }
 
-    public void setQuestionDatas() {
+    private boolean checkDupdatas(int id) {
 
-        //increase question number .
-        questionNumber++;
-
-        if (questionsCount.equals(String.valueOf(questionNumber))) {
-            Toast.makeText(MockActivity.this, "Test Ended", Toast.LENGTH_SHORT).show();
-
-            setupReview();
-            return;
+        for(int i = 0; i < dupIds.size() ; i++)
+        {
+            if(dupIds.get(i).equals(String.valueOf(id)))
+                return true;
         }
-
-        questionData = questionDatasArray.get(questionNumber);
-
-        //set Question number.
-        txtViewQuestionNumber.setText("Q. " + String.valueOf(questionNumber + 1) + " /");
-
-        //clearing all datas .
-        resetAllDatas();
-
-        final Animation in = new AlphaAnimation(0.0f, 1.0f);
-        in.setDuration(500);
-
-        final Animation out = new AlphaAnimation(1.0f, 0.0f);
-        out.setDuration(500);
-
-        txtViewQuestion.startAnimation(out);
-        txtViewOption1.startAnimation(out);
-        txtViewOption2.startAnimation(out);
-        txtViewOption3.startAnimation(out);
-        txtViewOption4.startAnimation(out);
-        out.setAnimationListener(new Animation.AnimationListener() {
-
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                txtViewQuestion.setText(questionData.getQuestion());
-                txtViewQuestion.startAnimation(in);
-
-                txtViewOption1.setText(questionData.getOption1());
-                txtViewOption1.startAnimation(in);
-
-                txtViewOption2.setText(questionData.getOption2());
-                txtViewOption2.startAnimation(in);
-
-                txtViewOption3.setText(questionData.getOption3());
-                txtViewOption3.startAnimation(in);
-
-                txtViewOption4.setText(questionData.getOption4());
-                txtViewOption4.startAnimation(in);
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-
-
-        txtViewOption1.setText(questionData.getOption1());
-        txtViewOption2.setText(questionData.getOption2());
-        txtViewOption3.setText(questionData.getOption3());
-        txtViewOption4.setText(questionData.getOption4());
-
+        return false;
     }
 
     public void resetAllDatas() {
@@ -251,7 +286,7 @@ public class MockActivity extends AppCompatActivity implements View.OnClickListe
                 checkAnswer(4);
                 break;
             case R.id.layoutButton:
-                setQuestionDatas();
+                setData();
                 break;
         }
 

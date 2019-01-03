@@ -26,6 +26,7 @@ import com.saneesh.psc_kerala.R;
 import com.saneesh.psc_kerala.Session;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.saneesh.psc_kerala.Base.setStatusBarGradiant;
 
@@ -52,6 +53,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     private String[] quizItems;
     private int quizItemsCount = 0;
+    private List<String> dupIds;
 
     private ImageView imgViewVolumeOn, imgViewVolumeOff;
     private LinearLayout layoutButtonLeft;
@@ -75,7 +77,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         setStatusBarGradiant(this);
         getViews();
         initControl();
-        getQuizItems();
         setData();
 
         setVolume();
@@ -95,11 +96,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         interstitialAd.loadAd(new AdRequest.Builder().build());
     }
 
-    private void getQuizItems() {
-
-        quizItems = Session.getSharedData("quizItems").split(",");
-    }
-
     public void getViews() {
 
         txtViewQuestion = (TextView) findViewById(R.id.txtViewQuestion);
@@ -114,6 +110,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         layoutOption4 = (LinearLayout) findViewById(R.id.layoutOption4);
 
         layoutButton = (LinearLayout) findViewById(R.id.layoutButton);
+        dupIds = new ArrayList<>();
 
         txtViewCoins = (TextView) findViewById(R.id.txtViewCoins);
         txtViewQuestionNumber = (TextView) findViewById(R.id.txtViewQuestionNumber);
@@ -169,17 +166,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     public void setData() {
 
         txtViewCoins.setText(Session.getSharedData("myCoins"));
-
-        String itemNo;
-        if (quizItemsCount != quizItems.length) {
-            itemNo = quizItems[quizItemsCount];
-            quizItemsCount++;
-            setQuestionDatas(itemNo);
-        } else {
-            quizItemsCount = 0;
-            itemNo = quizItems[quizItemsCount];
-            setQuestionDatas(itemNo);
-        }
+        setQuestionDatas();
 
     }
 
@@ -202,14 +189,16 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             setData();
         }
 
-}
+    }
 
-    public void setQuestionDatas(String itemNo) {
+    public void setQuestionDatas() {
 
         //increase question number .
         questionNumber++;
 
-        questionData = HomeActivity.INSTANCE.myDao().getQuizQuestions(itemNo);
+        questionData = HomeActivity.INSTANCE.myDao().getQuizQuestion();
+        //check duplicate data
+        checkDupdatas(questionData.getId());
 
         //set Question number.
         txtViewQuestionNumber.setText("Q. " + String.valueOf(questionNumber + 1));
@@ -273,6 +262,15 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         handlerTimer.post(runnableTimer);
 
     }
+
+    private void checkDupdatas(int id) {
+
+        for (int i = 0; i < dupIds.size(); i++) {
+            if (dupIds.get(i).equals(String.valueOf(id)))
+                setQuestionDatas();
+        }
+    }
+
 
     Runnable runnableTimer = new Runnable() {
         @Override
@@ -361,10 +359,10 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.layoutButton:
 
-                if ((questionNumber+1) % 10 == 0) {
+                if ((questionNumber + 1) % 10 == 0) {
                     setInterstitialAd();
                 } else {
-                    setData();
+                setData();
                 }
                 break;
             case R.id.layoutButtonLeft:

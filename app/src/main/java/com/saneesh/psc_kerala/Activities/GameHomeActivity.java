@@ -60,7 +60,7 @@ public class GameHomeActivity extends AppCompatActivity implements View.OnClickL
         MobileAds.initialize(this,getResources().getString(R.string.APPID));
 
         adMobView = (AdView) findViewById(R.id.adMobView);
-        adMobView.loadAd(new AdRequest.Builder().addTestDevice("C0256988724EBA3D6A98B53747EE5900").build());
+        adMobView.loadAd(new AdRequest.Builder().build());
 
     }
 

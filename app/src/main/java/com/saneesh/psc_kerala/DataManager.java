@@ -3,8 +3,8 @@ package com.saneesh.psc_kerala;
 import android.content.Context;
 
 import com.saneesh.psc_kerala.Interfaces.RetrofitCallBack;
+import com.saneesh.psc_kerala.Model.BaseUrl;
 import com.saneesh.psc_kerala.Model.GeneralModel;
-import com.saneesh.psc_kerala.Model.GeneralTable;
 import com.saneesh.psc_kerala.Model.QuestionsModel;
 import com.saneesh.psc_kerala.Model.ResponseResult;
 import com.saneesh.psc_kerala.Model.TopicModel;
@@ -38,13 +38,41 @@ public class DataManager {
     }
 
     public void init(Context applicationContext) {
-        cabApiInterface = PscApiClient.getAPiClient().create(PscApiInterface.class);
+        cabApiInterface = PscApiClient.getAPiClient("").create(PscApiInterface.class);
         mContext = applicationContext;
 
     }
 
+    public void getBaseUrls(final RetrofitCallBack<ArrayList<BaseUrl>> retrofitCallBack) {
+
+        Call<ResponseResult<ArrayList<BaseUrl>>> resultCall = cabApiInterface.getBaseUrls();
+
+        resultCall.enqueue(new Callback<ResponseResult<ArrayList<BaseUrl>>>() {
+            @Override
+            public void onResponse(Call<ResponseResult<ArrayList<BaseUrl>>> call, Response<ResponseResult<ArrayList<BaseUrl>>> response) {
+
+                if (response.isSuccessful()) {
+                    if (response.body().getCode().equals("100")) {
+                        retrofitCallBack.Success(response.body().getData());
+                    } else {
+                        retrofitCallBack.Failure(response.body().getStatus());
+                    }
+                } else {
+                    retrofitCallBack.Failure("Error");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseResult<ArrayList<BaseUrl>>> call, Throwable t) {
+                retrofitCallBack.Failure("Error");
+            }
+        });
+
+    }
+
     public void getDatas(final RetrofitCallBack<ArrayList<QuestionsModel>> retrofitCallBack) {
-        Call<ResponseResult<QuestionsModel>> resultCall = cabApiInterface.getGameData();
+
+        Call<ResponseResult<QuestionsModel>> resultCall = cabApiInterface.getGameData("https://raw.githubusercontent.com/saneeshmssngist/psc_datas/master/game_data.txt");
 
         resultCall.enqueue(new Callback<ResponseResult<QuestionsModel>>() {
             @Override
@@ -57,7 +85,7 @@ public class DataManager {
                         retrofitCallBack.Failure(response.body().getStatus());
                     }
                 } else {
-                    retrofitCallBack.Failure(response.body().getStatus());
+                    retrofitCallBack.Failure("Some error happened !!");
                 }
             }
 
@@ -71,7 +99,7 @@ public class DataManager {
 
     public void getGeneralDatas(final RetrofitCallBack<ArrayList<GeneralModel>> retrofitCallBack) {
 
-        Call<ResponseResult<GeneralModel>> resultCall = cabApiInterface.getGeneralData();
+        Call<ResponseResult<GeneralModel>> resultCall = cabApiInterface.getGeneralData("https://raw.githubusercontent.com/saneeshmssngist/psc_datas/master/general_data.txt");
 
         resultCall.enqueue(new Callback<ResponseResult<GeneralModel>>() {
             @Override
@@ -84,7 +112,7 @@ public class DataManager {
                         retrofitCallBack.Failure(response.body().getStatus());
                     }
                 } else {
-                    retrofitCallBack.Failure(response.body().getStatus());
+                    retrofitCallBack.Failure("Some error happened !!");
                 }
             }
 
@@ -96,7 +124,7 @@ public class DataManager {
         });
     }
 
-    public void getGeneralDatasCount(String generalType,final RetrofitCallBack<String> retrofitCallBack) {
+    public void getGeneralDatasCount(String generalType, final RetrofitCallBack<String> retrofitCallBack) {
 
         Call<ResponseResult> resultCall = cabApiInterface.getGeneralDataCount(generalType);
 
@@ -111,7 +139,7 @@ public class DataManager {
                         retrofitCallBack.Failure(response.body().getStatus());
                     }
                 } else {
-                    retrofitCallBack.Failure(response.body().getStatus());
+                    retrofitCallBack.Failure("Some error happened !!");
                 }
             }
 
@@ -125,7 +153,7 @@ public class DataManager {
 
     public void getQuestionPaper(final RetrofitCallBack<QuestionsModel> retrofitCallBack) {
 
-        Call<ResponseResult<QuestionsModel>> resultCall = cabApiInterface.getQuestionPapers();
+        Call<ResponseResult<QuestionsModel>> resultCall = cabApiInterface.getQuestionPapers("https://raw.githubusercontent.com/saneeshmssngist/psc_datas/master/question_papers.txt");
 
         resultCall.enqueue(new Callback<ResponseResult<QuestionsModel>>() {
             @Override
@@ -138,7 +166,7 @@ public class DataManager {
                         retrofitCallBack.Failure(response.body().getStatus());
                     }
                 } else {
-                    retrofitCallBack.Failure(response.body().getStatus());
+                    retrofitCallBack.Failure("Some error happened !!");
                 }
             }
 
@@ -149,6 +177,7 @@ public class DataManager {
             }
         });
     }
+
     public void getQuestionPaperHomeDatas(final RetrofitCallBack<ArrayList<QuestionsModel>> retrofitCallBack) {
 
         Call<ResponseResult<QuestionsModel>> resultCall = cabApiInterface.getQuestionPaperHomeData();
@@ -164,7 +193,7 @@ public class DataManager {
                         retrofitCallBack.Failure(response.body().getStatus());
                     }
                 } else {
-                    retrofitCallBack.Failure(response.body().getStatus());
+                    retrofitCallBack.Failure("Some error happened !!");
                 }
             }
 
@@ -176,7 +205,7 @@ public class DataManager {
         });
     }
 
-    public void getTopicDatas(String topicName ,final RetrofitCallBack<TopicModel> retrofitCallBack) {
+    public void getTopicDatas(String topicName, final RetrofitCallBack<TopicModel> retrofitCallBack) {
 
         Call<ResponseResult<TopicModel>> resultCall = cabApiInterface.getTopicContentDatas(topicName);
 
@@ -191,7 +220,7 @@ public class DataManager {
                         retrofitCallBack.Failure(response.body().getStatus());
                     }
                 } else {
-                    retrofitCallBack.Failure(response.body().getStatus());
+                    retrofitCallBack.Failure("Some error happened !!");
                 }
             }
 
@@ -205,7 +234,7 @@ public class DataManager {
 
     public void getTopicHomeDatas(final RetrofitCallBack<TopicModel> retrofitCallBack) {
 
-        Call<ResponseResult<TopicModel>> resultCall = cabApiInterface.getTopicHomeDatas();
+        Call<ResponseResult<TopicModel>> resultCall = cabApiInterface.getTopicHomeDatas("https://raw.githubusercontent.com/saneeshmssngist/psc_datas/master/get_topic_names.txt");
 
         resultCall.enqueue(new Callback<ResponseResult<TopicModel>>() {
             @Override
@@ -218,7 +247,7 @@ public class DataManager {
                         retrofitCallBack.Failure(response.body().getStatus());
                     }
                 } else {
-                    retrofitCallBack.Failure(response.body().getStatus());
+                    retrofitCallBack.Failure("Some error happened !!");
                 }
             }
 
@@ -232,7 +261,7 @@ public class DataManager {
 
     public void getShareLink(final RetrofitCallBack<String> retrofitCallBack) {
 
-        Call<ResponseResult<String>> resultCall = cabApiInterface.getShareLink();
+        Call<ResponseResult<String>> resultCall = PscApiClient.getAPiClient("server").create(PscApiInterface.class).getShareLink();
 
         resultCall.enqueue(new Callback<ResponseResult<String>>() {
             @Override
@@ -245,7 +274,7 @@ public class DataManager {
                         retrofitCallBack.Failure(response.body().getStatus());
                     }
                 } else {
-                    retrofitCallBack.Failure(response.body().getStatus());
+                    retrofitCallBack.Failure("Some error happened !!");
                 }
             }
 
@@ -259,7 +288,7 @@ public class DataManager {
 
     public void loginUser(HashMap<String, String> params, final RetrofitCallBack<String> retrofitCallBack) {
 
-        Call<ResponseResult<String>> resultCall = cabApiInterface.loginUser(params);
+        Call<ResponseResult<String>> resultCall = PscApiClient.getAPiClient("server").create(PscApiInterface.class).loginUser(params);
 
         resultCall.enqueue(new Callback<ResponseResult<String>>() {
             @Override
@@ -272,7 +301,7 @@ public class DataManager {
                         retrofitCallBack.Failure(response.body().getStatus());
                     }
                 } else {
-                    retrofitCallBack.Failure(response.body().getStatus());
+                    retrofitCallBack.Failure("Some error happened !!");
                 }
             }
 

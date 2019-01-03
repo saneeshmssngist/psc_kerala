@@ -26,7 +26,7 @@ public class QuizTable implements Serializable
     String option4;
 
     String answer;
-    String flag;
+    String status;
 
 
     public String getAnswer() {
@@ -37,12 +37,12 @@ public class QuizTable implements Serializable
         this.answer = answer;
     }
 
-    public String getFlag() {
-        return flag;
+    public String getStatus() {
+        return status;
     }
 
-    public void setFlag(String flag) {
-        this.flag = flag;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     @NonNull

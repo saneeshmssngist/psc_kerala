@@ -4,6 +4,9 @@
     <string name="FCM_PRE">com.saneesh.psc_kerala.fcm_pref</string>
     <string name="FCM_TOKEN">com.saneesh.psc_kerala.fcm_token</string>
 
+    <!--<string name="APPID"></string>-->
+    <!--<string name="BANNERID"></string>-->
+    <!--<string name="INTERTITIAID"></string>-->
     <string name="APPID">ca-app-pub-5847774043131331~5175038311</string>
     <string name="BANNERID">ca-app-pub-5847774043131331/2904098193</string>
     <string name="INTERTITIAID">ca-app-pub-5847774043131331/2169185730</string>

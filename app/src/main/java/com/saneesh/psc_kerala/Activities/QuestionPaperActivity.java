@@ -61,12 +61,12 @@ public class QuestionPaperActivity extends AppCompatActivity {
         initControl();
         setDatas();
 
-        setUpAdmob();
+      //  setUpAdmob();
     }
 
     private void setUpAdmob() {
 
-//        //admob sync..
+        //admob sync..
 //        MobileAds.initialize(this,getResources().getString(R.string.APPID));
 //
 //        adMobView = (AdView) findViewById(R.id.adMobView);

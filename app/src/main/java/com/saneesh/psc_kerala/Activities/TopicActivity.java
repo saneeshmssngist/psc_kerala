@@ -68,6 +68,7 @@ public class TopicActivity extends AppCompatActivity {
 
         adMobView = (AdView) findViewById(R.id.adMobView);
         adMobView.loadAd(new AdRequest.Builder().build());
+
     }
 
     private void getViews()

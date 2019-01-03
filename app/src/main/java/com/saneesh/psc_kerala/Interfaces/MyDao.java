@@ -25,12 +25,15 @@ public interface MyDao {
     @Insert
     void addQuizQuestions(QuizTable quizTable);
 
-    @Query("SELECT * FROM `game_all` WHERE `flag` = :paperNameNo ORDER BY random() LIMIT 1")
+    @Query("SELECT * FROM `game_all` WHERE `status` = :paperNameNo ORDER BY random() LIMIT 1")
     QuizTable getQuizQuestions(String paperNameNo);
+
+    @Query("SELECT * FROM `game_all` ORDER BY random() LIMIT 1")
+    QuizTable getQuizQuestion();
 
     //........................................................................................
 
-    @Query("SELECT * FROM `game_all` WHERE `flag` = :category ORDER BY random() LIMIT :range")
+    @Query("SELECT * FROM `game_all` WHERE `status` = :category ORDER BY random() LIMIT :range")
     List<QuizTable> getMockData(String category,String range);
 
     //...........................................................................................

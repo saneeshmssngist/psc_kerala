@@ -19,19 +19,37 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.GeneralHomeActivity" />
-        <activity android:name=".Activities.GeneralActivity" />
-        <activity android:name=".Activities.GameActivity" />
-        <activity android:name=".Activities.GameHomeActivity" />
-        <activity android:name=".Activities.MockHomeActivity" />
-        <activity android:name=".Activities.MockActivity" />
-        <activity android:name=".Activities.MockReviewActivity" />
-        <activity android:name=".Activities.QuestionPaperActivity" />
-        <activity android:name=".Activities.QuestionPaperHomeActivity" />
-        <activity android:name=".Activities.TopicActivity" />
-        <activity android:name=".Activities.TopicHomeActivity" />
-        <activity android:name=".Activities.HomeActivity" />
-        <activity android:name=".Activities.PreHomeActivity" />
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="475ee7d7c56492583485a47681c94fac5ff35c14"
+            />
+        <activity android:name=".Activities.GeneralHomeActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.GeneralActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.GameActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.GameHomeActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.MockHomeActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.MockActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.MockReviewActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.QuestionPaperActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.QuestionPaperHomeActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.TopicActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.TopicHomeActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.HomeActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.PreHomeActivity"
+            android:screenOrientation="portrait"/>
 
         <service android:name=".FCMessagingService">
             <intent-filter>

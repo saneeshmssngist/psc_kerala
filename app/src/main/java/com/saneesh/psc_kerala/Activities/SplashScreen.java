@@ -37,7 +37,7 @@ public class SplashScreen extends AppCompatActivity {
                 Intent intent;
 
                 SharedPreferences pref = getSharedPreferences("ActivityPREF", Context.MODE_PRIVATE);
-                if (pref.getBoolean("activity_executed", false)) {
+                if (pref.getBoolean("login_executed", false)) {
 
                     intent = new Intent(SplashScreen.this, HomeActivity.class);
 

@@ -65,6 +65,7 @@ public class GeneralHomeActivity extends AppCompatActivity implements View.OnCli
 
         adMobView = (AdView) findViewById(R.id.adMobView);
         adMobView.loadAd(new AdRequest.Builder().addTestDevice("C0256988724EBA3D6A98B53747EE5900").build());
+
     }
 
 
