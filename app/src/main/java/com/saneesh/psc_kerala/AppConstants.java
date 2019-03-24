@@ -9,4 +9,10 @@ public class AppConstants {
 
     public static final String ANSSHOW = "anwserAshow";
 
+    public static final String TROLLS_HOME = "https://raw.githubusercontent.com/saneeshmssngist/psc_datas/master/PSC_reloaded/trolls_home.txt";
+    public static final String QUESTION_PAPER_HOME = "https://raw.githubusercontent.com/saneeshmssngist/psc_datas/master/PSC_reloaded/question_paper_home.txt";
+
+
+
+
 }

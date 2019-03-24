@@ -21,11 +21,13 @@ import com.saneesh.psc_kerala.Adapters.QuestionPaperAdapter;
 import com.saneesh.psc_kerala.DataManager;
 import com.saneesh.psc_kerala.Interfaces.RetrofitCallBack;
 import com.saneesh.psc_kerala.Model.GeneralModel;
+import com.saneesh.psc_kerala.Model.QuestionPaperHome;
 import com.saneesh.psc_kerala.Model.QuestionTable1;
 import com.saneesh.psc_kerala.Model.QuestionsModel;
 import com.saneesh.psc_kerala.R;
 import com.wang.avi.AVLoadingIndicatorView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,18 +44,18 @@ public class QuestionPaperActivity extends AppCompatActivity {
     private QuestionPaperAdapter generalQuizAdapter;
     private ImageView imgLeft,imgRight;
     private TextView txtViewTokenNo;
-    private String paperNameNo,paperName = "";
     private Toolbar toolBar;
 
     private AdView adMobView;
+    private QuestionPaperHome questionPaperHome;
+    private ArrayList<QuestionsModel> questionPaperDatasArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question_paper);
 
-        paperNameNo = getIntent().getStringExtra("paperNameNo");
-        paperName = getIntent().getStringExtra("paperName");
+        questionPaperHome = (QuestionPaperHome) getIntent().getSerializableExtra("questionData");
 
         setStatusBarGradiant(this);
         getViews();
@@ -95,6 +97,9 @@ public class QuestionPaperActivity extends AppCompatActivity {
         recyclerViewQuestions.setHasFixedSize(true);
         recyclerViewQuestions.setLayoutManager(new LinearLayoutManager(this));
 
+        generalQuizAdapter = new QuestionPaperAdapter(this, new ArrayList<QuestionsModel>(),tokenNo);
+        recyclerViewQuestions.setAdapter(generalQuizAdapter);
+
     }
 
     private void initControl() {
@@ -108,7 +113,7 @@ public class QuestionPaperActivity extends AppCompatActivity {
                 if(tokenNo > 1) {
                     tokenNo -= 1;
                     txtViewTokenNo.setText(String.valueOf(tokenNo));
-                    setDatas();
+                    setQuestionDatas();
                 }
             }
         });
@@ -120,7 +125,7 @@ public class QuestionPaperActivity extends AppCompatActivity {
                 if(tokenNo < 10) {
                     tokenNo += 1;
                     txtViewTokenNo.setText(String.valueOf(tokenNo));
-                    setDatas();
+                    setQuestionDatas();
                 }
             }
         });
@@ -130,10 +135,31 @@ public class QuestionPaperActivity extends AppCompatActivity {
 
     private void setDatas() {
 
-        List<QuestionTable1> questionsModels = HomeActivity.INSTANCE.myDao().getQuestionPaper1((tokenNo-1)*10,paperNameNo);
-        generalQuizAdapter = new QuestionPaperAdapter(this, questionsModels,tokenNo);
-        recyclerViewQuestions.setAdapter(generalQuizAdapter);
 
+        DataManager.getDatamanager().getQuestionPaper(questionPaperHome.getUrl(),new RetrofitCallBack<QuestionPaperHome>() {
+            @Override
+            public void Success(QuestionPaperHome questionPaperData) {
+                questionPaperDatasArray = questionPaperData.getQuestionsModelsArry();
+                setQuestionDatas();
+            }
+            @Override
+            public void Failure(String error) {
+
+            }
+        });
+
+    }
+
+    public void setQuestionDatas()
+    {
+        ArrayList<QuestionsModel> questionsModelsArray = new ArrayList<>();
+        for(int i = ((tokenNo-1)*10); i < (tokenNo*10) && i < questionPaperDatasArray.size() ; i++) {
+            questionsModelsArray.add(questionPaperDatasArray.get(i));
+        }
+
+
+        generalQuizAdapter = new QuestionPaperAdapter(QuestionPaperActivity.this, questionsModelsArray,tokenNo);
+        recyclerViewQuestions.setAdapter(generalQuizAdapter);
     }
 
 }

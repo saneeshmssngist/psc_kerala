@@ -26,11 +26,11 @@ import java.util.List;
 
 public class QuestionPaperAdapter extends RecyclerView.Adapter<QuestionPaperAdapter.QuestionHolder> {
 
-    private List<QuestionTable1> generalDatas;
+    private List<QuestionsModel> generalDatas;
     private Context context;
     private int tokenNo;
 
-    public QuestionPaperAdapter(Context context, List<QuestionTable1> generalDatas, int tokenNo) {
+    public QuestionPaperAdapter(Context context, List<QuestionsModel> generalDatas, int tokenNo) {
         this.generalDatas = generalDatas;
         this.context = context;
         this.tokenNo = tokenNo;
@@ -51,30 +51,30 @@ public class QuestionPaperAdapter extends RecyclerView.Adapter<QuestionPaperAdap
     @Override
     public void onBindViewHolder(final QuestionHolder holder, int position) {
 
-        final QuestionTable1 questionTable1 = generalDatas.get(position);
+        final QuestionsModel questionsModel = generalDatas.get(position);
 
         holder.txtQuestionNo.setText(String.valueOf(((tokenNo-1)*10)+position+1));
-        holder.txtQuestion.setText(questionTable1.getQuestion());
-        holder.txtOption1.setText(questionTable1.getOption1());
-        holder.txtOption2.setText(questionTable1.getOption2());
-        holder.txtOption3.setText(questionTable1.getOption3());
-        holder.txtOption4.setText(questionTable1.getOption4());
+        holder.txtQuestion.setText(questionsModel.getQuestion());
+        holder.txtOption1.setText(questionsModel.getOption1());
+        holder.txtOption2.setText(questionsModel.getOption2());
+        holder.txtOption3.setText(questionsModel.getOption3());
+        holder.txtOption4.setText(questionsModel.getOption4());
 
         holder.imgAnswer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if(questionTable1.getAnswer().equals("1"))
+                if(questionsModel.getAnswer().equals("1"))
                 {
                     holder.layoutOption1.setBackgroundResource(R.drawable.question_paper_answer_bg);
                     holder.txtOption1.setTextColor(Color.parseColor("#ffffff"));
                 }
-                else if(questionTable1.getAnswer().equals("2"))
+                else if(questionsModel.getAnswer().equals("2"))
                 {
                     holder.layoutOption2.setBackgroundResource(R.drawable.question_paper_answer_bg);
                     holder.txtOption2.setTextColor(Color.parseColor("#ffffff"));
                 }
-                else if(questionTable1.getAnswer().equals("3"))
+                else if(questionsModel.getAnswer().equals("3"))
                 {
                     holder.layoutOption3.setBackgroundResource(R.drawable.question_paper_answer_bg);
                     holder.txtOption3.setTextColor(Color.parseColor("#ffffff"));

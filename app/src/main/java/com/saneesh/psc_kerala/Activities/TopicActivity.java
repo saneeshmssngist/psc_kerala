@@ -58,7 +58,7 @@ public class TopicActivity extends AppCompatActivity {
         getViews();
         setData();
 
-        setUpAdmob();
+     //   setUpAdmob();
     }
 
     private void setUpAdmob() {

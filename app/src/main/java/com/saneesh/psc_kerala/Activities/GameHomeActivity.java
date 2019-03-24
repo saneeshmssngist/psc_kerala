@@ -51,7 +51,7 @@ public class GameHomeActivity extends AppCompatActivity implements View.OnClickL
         getViews();
         initControl();
 
-        setUpAdmob();
+     //   setUpAdmob();
     }
 
     private void setUpAdmob() {

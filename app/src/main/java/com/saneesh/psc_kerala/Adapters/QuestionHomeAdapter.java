@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.saneesh.psc_kerala.Activities.QuestionPaperActivity;
 import com.saneesh.psc_kerala.Interfaces.RetrofitCallBack;
+import com.saneesh.psc_kerala.Model.QuestionPaperHome;
 import com.saneesh.psc_kerala.Model.QuestionsModel;
 import com.saneesh.psc_kerala.R;
 
@@ -22,21 +23,25 @@ import java.util.ArrayList;
 
 public class QuestionHomeAdapter extends RecyclerView.Adapter<QuestionHomeAdapter.QuestionHolder> {
 
-    private ArrayList<QuestionsModel> paperNames;
+    private ArrayList<QuestionPaperHome> paperNames;
     private Context context;
     private QuestionsInterface questionsInterface;
 
-    public interface QuestionsInterface
-    {
-        void questtionTapped(int adapterPosition);
+    public void update(ArrayList<QuestionPaperHome> questionPaperHomesArray) {
+        this.paperNames = questionPaperHomesArray;
+        notifyDataSetChanged();
     }
 
-    public
-    QuestionHomeAdapter(QuestionsInterface questionsInterface, Context context, ArrayList<QuestionsModel> paperNames)
+    public interface QuestionsInterface
     {
-        this.questionsInterface = questionsInterface;
+        void questionTapped(int adapterPosition);
+    }
+
+    public QuestionHomeAdapter(Context context, ArrayList<QuestionPaperHome> paperNames, QuestionsInterface questionsInterface)
+    {
         this.context = context;
         this.paperNames = paperNames;
+        this.questionsInterface = questionsInterface;
     }
 
     @Override
@@ -54,9 +59,9 @@ public class QuestionHomeAdapter extends RecyclerView.Adapter<QuestionHomeAdapte
     @Override
     public void onBindViewHolder(QuestionHolder holder, int position) {
 
-        QuestionsModel questionsModel = paperNames.get(position);
+        QuestionPaperHome paperHome = paperNames.get(position);
 
-        if(questionsModel.getStatus().equals("0"))
+        if(paperHome.getStatus().equals("0"))
         {
            holder.txtSoon.setVisibility(View.VISIBLE);
         }
@@ -64,9 +69,9 @@ public class QuestionHomeAdapter extends RecyclerView.Adapter<QuestionHomeAdapte
             holder.txtSoon.setVisibility(View.GONE);
         }
 
-        holder.txtPaperName.setText(questionsModel.getqName());
-        holder.txtQNo.setText(questionsModel.getqNumber() + " questions");
-        holder.txtQDate.setText(questionsModel.getqDate());
+        holder.txtPaperName.setText(paperHome.getName());
+        holder.txtQNo.setText(paperHome.getQuestionNo() + " questions");
+        holder.txtQDate.setText(paperHome.getDate());
 
     }
 
@@ -86,10 +91,10 @@ public class QuestionHomeAdapter extends RecyclerView.Adapter<QuestionHomeAdapte
                 public void onClick(View v) {
 
 
-                    QuestionsModel questionsModel = paperNames.get(getAdapterPosition());
-                    if(questionsModel.getStatus().equals("1")) {
+                    QuestionPaperHome questionPaperHome = paperNames.get(getAdapterPosition());
+                    if(questionPaperHome.getStatus().equals("1")) {
 
-                        questionsInterface.questtionTapped(getAdapterPosition());
+                        questionsInterface.questionTapped(getAdapterPosition());
                     }
                     else
                     {

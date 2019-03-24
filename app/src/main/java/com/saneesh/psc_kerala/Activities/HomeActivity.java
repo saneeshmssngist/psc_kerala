@@ -63,7 +63,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         context = this;
         Base.setStatusBarGradiant(this);
-        Fabric.with(this, new Crashlytics());
+//        Fabric.with(this, new Crashlytics());
 
        // setUpAdmob();
         //message topic ...
@@ -223,7 +223,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     startActivity(new Intent(this, QuestionPaperHomeActivity.class));
                     break;
                 case R.id.layotShareApp:
-                    shareAPp();
+
+                    startActivity(new Intent(this,TrollsHomeActivity.class));
+
+//                    shareAPp();
                     break;
 
             }

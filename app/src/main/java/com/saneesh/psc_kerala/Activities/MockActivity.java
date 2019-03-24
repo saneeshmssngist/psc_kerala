@@ -69,7 +69,7 @@ public class MockActivity extends AppCompatActivity implements View.OnClickListe
         initControl();
 
         setData();
-        setUpAdmob();
+     //   setUpAdmob();
     }
 
     private void setUpAdmob() {

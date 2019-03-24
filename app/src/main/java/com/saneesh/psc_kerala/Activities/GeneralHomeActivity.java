@@ -55,7 +55,7 @@ public class GeneralHomeActivity extends AppCompatActivity implements View.OnCli
         initControl();
 
         setDatas();
-        setUpAdmob();
+      //  setUpAdmob();
     }
 
     private void setUpAdmob() {

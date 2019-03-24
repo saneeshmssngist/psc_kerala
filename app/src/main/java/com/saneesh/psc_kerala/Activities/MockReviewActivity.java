@@ -49,7 +49,7 @@ public class MockReviewActivity extends AppCompatActivity {
         setActionBar();
         setDatas();
 
-        setUpAdmob();
+      //  setUpAdmob();
     }
 
     public void setActionBar() {

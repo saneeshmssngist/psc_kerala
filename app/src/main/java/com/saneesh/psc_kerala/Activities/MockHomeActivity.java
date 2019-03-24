@@ -42,7 +42,7 @@ public class MockHomeActivity extends AppCompatActivity implements View.OnClickL
         getViews();
         initControl();
         setDatas();
-        setUpAdmob();
+    //    setUpAdmob();
 
     }
 

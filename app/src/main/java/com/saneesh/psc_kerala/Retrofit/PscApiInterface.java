@@ -2,10 +2,11 @@ package com.saneesh.psc_kerala.Retrofit;
 
 import com.saneesh.psc_kerala.Model.BaseUrl;
 import com.saneesh.psc_kerala.Model.GeneralModel;
-import com.saneesh.psc_kerala.Model.GeneralTable;
+import com.saneesh.psc_kerala.Model.QuestionPaperHome;
 import com.saneesh.psc_kerala.Model.QuestionsModel;
 import com.saneesh.psc_kerala.Model.ResponseResult;
 import com.saneesh.psc_kerala.Model.TopicModel;
+import com.saneesh.psc_kerala.Model.TrollHome;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,19 +29,19 @@ public interface PscApiInterface {
     //@POST("game_data.txt?alt=media&token=6934f80b-83da-438f-9a22-f356087f1a30")
 
     @POST("get_urls.php")
-    Call<ResponseResult<ArrayList<BaseUrl>>>  getBaseUrls();
+    Call<ResponseResult<ArrayList<BaseUrl>>> getBaseUrls();
 
     @GET
     Call<ResponseResult<QuestionsModel>> getGameData(@Url String s);
 
     @GET
-    Call<ResponseResult<GeneralModel>>  getGeneralData(@Url String s);
-
-    @GET
-    Call<ResponseResult<QuestionsModel>> getQuestionPapers(@Url String s);
+    Call<ResponseResult<GeneralModel>> getGeneralData(@Url String s);
 
     @GET
     Call<ResponseResult<TopicModel>> getTopicHomeDatas(@Url String s);
+
+    @GET
+    Call<ResponseResult<QuestionPaperHome>> getQuestionPapers(@Url String s);
 
     @POST("get_share_link.php")
     Call<ResponseResult<String>> getShareLink();
@@ -50,18 +51,24 @@ public interface PscApiInterface {
     Call<ResponseResult<String>> loginUser(@FieldMap HashMap<String, String> params);
 
 
-   // .......................................................
+    // .......................................................
 
     @FormUrlEncoded()
     @POST("general_data_count.php")
     Call<ResponseResult> getGeneralDataCount(@Field("general_type") String generalType);
 
-    @POST("question_papers_count.php")
-    Call<ResponseResult<QuestionsModel>> getQuestionPaperHomeData();
+    @GET
+    Call<ResponseResult<ArrayList<QuestionPaperHome>>> getQuestionPaperHomeData(@Url String s);
 
     @FormUrlEncoded()
     @POST("get_topic_content.php")
     Call<ResponseResult<TopicModel>> getTopicContentDatas(@Field("topic_id") String topicId);
+
+    @GET
+    Call<ResponseResult<ArrayList<String>>> getTrollsDatas(@Url String trollsHome);
+
+    @GET
+    Call<ResponseResult<ArrayList<TrollHome>>> getPscTrollHomeDatas(@Url String masterUrl);
 
 
 }

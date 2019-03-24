@@ -80,7 +80,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         setData();
 
         setVolume();
-        setUpAdmob();
+     //   setUpAdmob();
     }
 
     private void setUpAdmob() {

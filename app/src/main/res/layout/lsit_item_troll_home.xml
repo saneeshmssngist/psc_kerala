@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#eff1f3"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="10dp"
+        >
+
+        <com.github.florent37.shapeofview.shapes.RoundRectView
+            android:id="@+id/imageViewRect"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:elevation="10dp"
+            app:shape_roundRect_bottomLeftRadius="10dp"
+            app:shape_roundRect_bottomRightRadius="0dp"
+            app:shape_roundRect_topLeftRadius="5dp"
+            app:shape_roundRect_topRightRadius="0dp"
+            >
+
+            <ImageView
+                android:id="@+id/imgView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:scaleType="fitXY"
+                />
+
+        </com.github.florent37.shapeofview.shapes.RoundRectView>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            >
+
+            <TextView
+                android:id="@+id/txtViewName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="95dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center_vertical"
+                android:text="bdhabdhsbaj"
+                android:textColor="#292929"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:id="@+id/txtViewNo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="95dp"
+                android:layout_marginTop="5dp"
+                android:layout_below="@+id/txtViewName"
+                android:gravity="center_vertical"
+                android:text="10 Trolls"
+                android:textColor="#504f4f"
+                android:textSize="14sp"
+                />
+
+            <TextView
+                android:id="@+id/txtViewDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:gravity="center_vertical"
+                android:text="10-May-2019"
+                android:textColor="#737272"
+                android:textSize="12sp"
+                />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+
+</RelativeLayout>
