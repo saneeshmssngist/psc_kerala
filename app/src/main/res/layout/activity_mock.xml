@@ -6,14 +6,15 @@
     android:id="@+id/activity_sample"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.saneesh.psc_kerala.Activities.GameActivity">
-
+    tools:context="com.saneesh.psc_kerala.Activities.MockActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#dadada"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginTop="45dp"
+        >
 
         <RelativeLayout
             android:id="@+id/topLayout"
@@ -35,9 +36,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="bottom"
-                android:text="Q. 0 /"
+                android:text="Q. 0"
                 android:textColor="@color/black"
-                android:textSize="30sp"
+                android:textSize="20sp"
                 android:textStyle="bold" />
             <TextView
                 android:id="@+id/txtTotalQns"
@@ -45,9 +46,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="bottom"
-                android:text="10"
+                android:text=" /10"
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="16sp"
+                android:visibility="visible"
                 />
 
             </LinearLayout>
@@ -56,21 +58,24 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/layoutContent"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_below="@+id/topLayout"
+            android:layout_weight="6"
             android:layout_marginTop="-80dp"
-            android:layout_weight="5">
+            >
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="10dp">
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:padding="5dp"
+                >
 
                 <android.support.v7.widget.CardView
                     android:id="@+id/txtViewQuestionCard"
                     android:layout_width="match_parent"
-                    android:layout_height="150dp"
+                    android:layout_height="120dp"
                     app:cardBackgroundColor="#fff2f2"
                     app:cardCornerRadius="5dp"
                     app:cardElevation="10dp"
@@ -84,7 +89,7 @@
                         android:gravity="center"
                         android:text="Question ?"
                         android:textColor="@color/black"
-                        android:textSize="16sp"
+                        android:textSize="14sp"
                         android:textStyle="bold" />
 
                 </android.support.v7.widget.CardView>
@@ -92,34 +97,30 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_below="@+id/txtViewQuestionCard"
                     android:layout_marginTop="30dp"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        >
+                    android:orientation="vertical"
+                    >
 
                         <LinearLayout
                             android:id="@+id/layoutOption1"
                             android:layout_width="match_parent"
-                            android:layout_height="0dp"
+                            android:layout_height="45dp"
                             android:layout_margin="5dp"
-                            android:layout_weight="1"
+                            android:padding="5dp"
                             android:background="@drawable/game_quiz_options"
-                            android:elevation="10dp">
+                            android:elevation="3dp">
 
                             <TextView
                                 android:layout_width="30dp"
                                 android:layout_height="match_parent"
-                                android:background="@drawable/game_quiz_num"
-                                android:gravity="center"
-                                android:text="A"
-                                android:textColor="@color/white"
-                                android:textSize="14sp" />
+                                android:gravity="right|center_vertical"
+                                android:text="A . "
+                                android:textColor="@color/master_color"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                />
 
                             <TextView
                                 android:id="@+id/txtViewOption1"
@@ -128,7 +129,7 @@
                                 android:gravity="center"
                                 android:padding="5dp"
                                 android:text="Option1"
-                                android:textColor="@color/white"
+                                android:textColor="@color/black"
                                 android:textSize="14sp" />
 
                         </LinearLayout>
@@ -136,24 +137,26 @@
                         <LinearLayout
                             android:id="@+id/layoutOption2"
                             android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1"
+                            android:layout_height="45dp"
                             android:layout_marginTop="15dp"
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="5dp"
                             android:layout_marginBottom="5dp"
+                            android:gravity="center"
+                            android:padding="5dp"
                             android:background="@drawable/game_quiz_options"
-                            android:elevation="10dp"
-                            android:gravity="center">
+                            android:elevation="3dp"
+                            >
 
                             <TextView
                                 android:layout_width="30dp"
                                 android:layout_height="match_parent"
-                                android:background="@drawable/game_quiz_num"
-                                android:gravity="center"
-                                android:text="B"
-                                android:textColor="@color/white"
-                                android:textSize="14sp" />
+                                android:gravity="right|center_vertical"
+                                android:text="B . "
+                                android:textColor="@color/master_color"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                />
 
                             <TextView
                                 android:id="@+id/txtViewOption2"
@@ -162,7 +165,7 @@
                                 android:gravity="center"
                                 android:padding="5dp"
                                 android:text="Option2"
-                                android:textColor="@color/white"
+                                android:textColor="@color/black"
                                 android:textSize="14sp" />
 
                         </LinearLayout>
@@ -170,23 +173,23 @@
                         <LinearLayout
                             android:id="@+id/layoutOption3"
                             android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1"
+                            android:layout_height="45dp"
                             android:layout_marginTop="15dp"
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="5dp"
                             android:layout_marginBottom="5dp"
                             android:background="@drawable/game_quiz_options"
-                            android:elevation="10dp">
+                            android:elevation="3dp">
 
                             <TextView
                                 android:layout_width="30dp"
                                 android:layout_height="match_parent"
-                                android:background="@drawable/game_quiz_num"
-                                android:gravity="center"
-                                android:text="C"
-                                android:textColor="@color/white"
-                                android:textSize="14sp" />
+                                android:gravity="right|center_vertical"
+                                android:text="C . "
+                                android:textColor="@color/master_color"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                />
 
                             <TextView
                                 android:id="@+id/txtViewOption3"
@@ -195,7 +198,7 @@
                                 android:gravity="center"
                                 android:padding="5dp"
                                 android:text="Option3"
-                                android:textColor="@color/white"
+                                android:textColor="@color/black"
                                 android:textSize="14sp" />
 
                         </LinearLayout>
@@ -203,24 +206,24 @@
                         <LinearLayout
                             android:id="@+id/layoutOption4"
                             android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1"
+                            android:layout_height="45dp"
                             android:layout_marginTop="15dp"
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="5dp"
                             android:layout_marginBottom="5dp"
                             android:background="@drawable/game_quiz_options"
-                            android:elevation="10dp"
+                            android:elevation="3dp"
                             android:gravity="center">
 
                             <TextView
                                 android:layout_width="30dp"
                                 android:layout_height="match_parent"
-                                android:background="@drawable/game_quiz_num"
-                                android:gravity="center"
-                                android:text="D"
-                                android:textColor="@color/white"
-                                android:textSize="14sp" />
+                                android:gravity="right|center_vertical"
+                                android:text="D . "
+                                android:textColor="@color/master_color"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                />
 
                             <TextView
                                 android:id="@+id/txtViewOption4"
@@ -229,13 +232,10 @@
                                 android:gravity="center"
                                 android:padding="5dp"
                                 android:text="Option4"
-                                android:textColor="@color/white"
+                                android:textColor="@color/black"
                                 android:textSize="14sp" />
 
                         </LinearLayout>
-
-                    </LinearLayout>
-
 
                 </LinearLayout>
 
@@ -243,7 +243,6 @@
 
 
         </RelativeLayout>
-
 
     </LinearLayout>
 
@@ -259,13 +258,14 @@
         <com.airbnb.lottie.LottieAnimationView
             android:layout_width="50dp"
             android:layout_height="60dp"
-            android:layout_marginBottom="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="10dp"
             app:lottie_autoPlay="true"
             app:lottie_fileName="send_psc.json"
             app:lottie_loop="true" />
 
     </LinearLayout>
+
 
     <com.google.android.gms.ads.AdView
         android:id="@+id/adMobView"

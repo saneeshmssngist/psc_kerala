@@ -22,12 +22,12 @@ import java.util.List;
 
 public class GeneralQuizAdapter extends RecyclerView.Adapter<GeneralQuizAdapter.GeneralHolder> {
 
-    private List<GeneralTable> generalDatas;
+    private List<GeneralModel> generalDatas;
     private Context context;
     private int tokenNo;
     private boolean answerVisible;
 
-    public GeneralQuizAdapter(Context context, List<GeneralTable> generalDatas, int tokenNo) {
+    public GeneralQuizAdapter(Context context, List<GeneralModel> generalDatas, int tokenNo) {
         this.generalDatas = generalDatas;
         this.context = context;
         this.tokenNo = tokenNo;
@@ -51,7 +51,7 @@ public class GeneralQuizAdapter extends RecyclerView.Adapter<GeneralQuizAdapter.
     @Override
     public void onBindViewHolder(final GeneralHolder holder, int position) {
 
-        GeneralTable generalTable = generalDatas.get(position);
+        GeneralModel generalTable = generalDatas.get(position);
 
         holder.txtViewQuestion.setText(generalTable.getQuestion());
         holder.txtViewAnswer.setText(generalTable.getAnswer());

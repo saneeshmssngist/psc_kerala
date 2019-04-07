@@ -2,14 +2,16 @@ package com.saneesh.psc_kerala.Model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by saNeesH on 2018-07-07.
  */
 
-public class TopicModel
-{
+public class TopicModel implements Serializable {
+
+
     @SerializedName("id")
     String id;
 
@@ -19,34 +21,27 @@ public class TopicModel
     @SerializedName("image_url")
     String imageUrl;
 
-    @SerializedName("topic_names")
-    ArrayList<TopicModel> topicNames;
-
-
-    @SerializedName("content_id")
-    String contentId;
+    @SerializedName("contents")
+    ArrayList<String> content;
 
     @SerializedName("topic_content")
-    String contents;
-
-    @SerializedName("topic_contents")
-    ArrayList<TopicModel> topicContents;
+    ArrayList<TopicModel> contentsArray;
 
 
-    public ArrayList<TopicModel> getTopicContents() {
-        return topicContents;
+    public String getId() {
+        return id;
     }
 
-    public void setTopicContents(ArrayList<TopicModel> topicContents) {
-        this.topicContents = topicContents;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getContentId() {
-        return contentId;
+    public String getTopicName() {
+        return topicName;
     }
 
-    public void setContentId(String contentId) {
-        this.contentId = contentId;
+    public void setTopicName(String topicName) {
+        this.topicName = topicName;
     }
 
     public String getImageUrl() {
@@ -57,35 +52,19 @@ public class TopicModel
         this.imageUrl = imageUrl;
     }
 
-    public String getId() {
-        return id;
+    public ArrayList<String> getContent() {
+        return content;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setContent(ArrayList<String> content) {
+        this.content = content;
     }
 
-    public ArrayList<TopicModel> getTopicNames() {
-        return topicNames;
+    public ArrayList<TopicModel> getContentsArray() {
+        return contentsArray;
     }
 
-    public void setTopicNames(ArrayList<TopicModel> topicNames) {
-        this.topicNames = topicNames;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
-    public void setContents(String contents) {
-        this.contents = contents;
-    }
-
-    public String getTopicName() {
-        return topicName;
-    }
-
-    public void setTopicName(String topicName) {
-        this.topicName = topicName;
+    public void setContentsArray(ArrayList<TopicModel> contentsArray) {
+        this.contentsArray = contentsArray;
     }
 }

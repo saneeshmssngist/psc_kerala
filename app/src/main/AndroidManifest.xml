@@ -31,12 +31,6 @@
             android:name=".Activities.GeneralActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.GameActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".Activities.GameHomeActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".Activities.MockHomeActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -69,19 +63,21 @@
         <activity
             android:name=".Activities.TrollsActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.NetworkStateActivity"
+            android:screenOrientation="portrait" />
 
         <service android:name=".FCMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service android:name=".FcmInstanceIdService">
-            <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
-            </intent-filter>
-        </service>
 
-        <activity android:name=".Activities.BaseActivity"></activity>
+        <activity android:name=".Activities.BaseActivity" />
+        <activity android:name=".Activities.InfinityQuizActivity" />
+        <activity android:name=".Activities.ScoreBoardActivity" />
+        <activity android:name=".Activities.DailyQuizHomeActivity" />
+        <activity android:name=".Activities.DailyQuizActivity"></activity>
     </application>
 
 </manifest>

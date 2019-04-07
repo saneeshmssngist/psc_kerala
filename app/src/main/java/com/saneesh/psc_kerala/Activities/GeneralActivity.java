@@ -1,13 +1,12 @@
 package com.saneesh.psc_kerala.Activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.AnimationUtils;
@@ -19,20 +18,19 @@ import android.widget.TextView;
 import com.saneesh.psc_kerala.Adapters.GeneralQuizAdapter;
 import com.saneesh.psc_kerala.Adapters.GeneralQuizPagerDataAdapter;
 import com.saneesh.psc_kerala.AppConstants;
+import com.saneesh.psc_kerala.DataManager;
 import com.saneesh.psc_kerala.Interfaces.GeneralQuizInterface;
-import com.saneesh.psc_kerala.Model.GeneralTable;
+import com.saneesh.psc_kerala.Interfaces.RetrofitCallBack;
+import com.saneesh.psc_kerala.Model.GeneralModel;
+import com.saneesh.psc_kerala.NetworkConnection;
 import com.saneesh.psc_kerala.R;
 import com.saneesh.psc_kerala.Session;
-import com.wang.avi.AVLoadingIndicatorView;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import static com.saneesh.psc_kerala.Base.setStatusBarGradiant;
 
-public class GeneralActivity extends AppCompatActivity implements GeneralQuizInterface {
-
-    private LinearLayout layoutProgress;
-    private AVLoadingIndicatorView avilayoutProgress;
+public class GeneralActivity extends BaseActivity implements GeneralQuizInterface {
 
     private RecyclerView recyclerViewDatas;
     private RecyclerView recyclerViewPager;
@@ -49,12 +47,11 @@ public class GeneralActivity extends AppCompatActivity implements GeneralQuizInt
     private GeneralQuizPagerDataAdapter generalQuizPagerData;
     private GeneralQuizAdapter generalQuizAdapter;
 
-    private Toolbar toolBar;
-
     private Context context;
-    private int tokenNo = 0;
-    private String status = "";
+    private int tokenNo = 1;
+    private String dataUrl = "", name = "";
     private int pageLimit = 0;
+    private ArrayList<GeneralModel> generalQuestionDatasArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,12 +60,20 @@ public class GeneralActivity extends AppCompatActivity implements GeneralQuizInt
 
         context = this;
 
-        status = getIntent().getStringExtra("status");
+        dataUrl = getIntent().getStringExtra("dataUrl");
+        name = getIntent().getStringExtra("name");
 
         setStatusBarGradiant(this);
-        setActionBar();
+        setToolBar(name);
+
         getViews();
         initControl();
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
 
         if (Session.getSharedBoolean(AppConstants.ANSSHOW) == true) {
             btnHideShowView1.setVisibility(View.VISIBLE);
@@ -78,51 +83,13 @@ public class GeneralActivity extends AppCompatActivity implements GeneralQuizInt
             btnHideShowView2.setVisibility(View.VISIBLE);
         }
 
-        setPagerDatas();
         setDatas();
-
-    }
-
-    public void setActionBar() {
-
-        toolBar = findViewById(R.id.toolBar);
-        setSupportActionBar(toolBar);
-
-        String title = "Read to Learn";
-        switch (status)
-        {
-            case "1" :title = getResources().getString(R.string.geography);
-                break;
-            case "2" :title = getResources().getString(R.string.history);
-                break;
-            case "3" :title = getResources().getString(R.string.india);
-                break;
-            case "4" :title = getResources().getString(R.string.movies);
-                break;
-            case "5" :title = getResources().getString(R.string.maths);
-                break;
-            case "6" :title = getResources().getString(R.string.sports);
-                break;
-            case "7" :title = getResources().getString(R.string.world);
-                break;
-            case "9" :title = getResources().getString(R.string.literature);
-                break;
-            case "10" :title = getResources().getString(R.string.kerala);
-                break;
-            case "11" :title = getResources().getString(R.string.science);
-                break;
-        }
-
-        getSupportActionBar().setTitle(title);
     }
 
     public void getViews() {
 //        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 //        frameLayouts = findViewById(R.id.frameLayout);
 //        bottomSheetBehavior = BottomSheetBehavior.from(frameLayouts);
-
-        layoutProgress = findViewById(R.id.layoutProgress);
-        avilayoutProgress = findViewById(R.id.avilayoutProgress);
 
         imageViewLeft = (ImageView) findViewById(R.id.imageViewLeft);
         imageViewRight = (ImageView) findViewById(R.id.imageViewRight);
@@ -171,13 +138,13 @@ public class GeneralActivity extends AppCompatActivity implements GeneralQuizInt
         @Override
         public void onClick(View v) {
 
-            if (tokenNo == 0)
+            if (tokenNo == 1)
                 return;
 
             tokenNo -= 1;
-            generalQuizPagerData.reloadPager(tokenNo+1);
+            generalQuizPagerData.reloadPager(tokenNo);
             recyclerViewPager.scrollToPosition(tokenNo - 1);
-            setDatas();
+            setQuestionDatas();
         }
     };
 
@@ -189,9 +156,9 @@ public class GeneralActivity extends AppCompatActivity implements GeneralQuizInt
                 return;
 
             tokenNo += 1;
-            generalQuizPagerData.reloadPager(tokenNo+1);
+            generalQuizPagerData.reloadPager(tokenNo);
             recyclerViewPager.scrollToPosition(tokenNo - 1);
-            setDatas();
+            setQuestionDatas();
 
         }
     };
@@ -233,23 +200,54 @@ public class GeneralActivity extends AppCompatActivity implements GeneralQuizInt
 
     public void setDatas() {
 
-        txtViewPageCount.setText(String.valueOf(tokenNo+1));
+        NetworkConnection networkConnection = new NetworkConnection();
+        if (!networkConnection.isConnected(GeneralActivity.this)) {
+            startActivity(new Intent(GeneralActivity.this, NetworkStateActivity.class));
 
-        List<GeneralTable> generalDatas = HomeActivity.INSTANCE.myDao().getGeneralDatas(status,String.valueOf(tokenNo*10));
+        } else {
+            DataManager.getDatamanager().getGeneralData(dataUrl, new RetrofitCallBack<ArrayList<GeneralModel>>() {
+                @Override
+                public void Success(ArrayList<GeneralModel> generalDatasArray) {
+
+                    generalQuestionDatasArray = generalDatasArray;
+                    setQuestionDatas();
+                    setPagerDatas();
+
+                }
+
+                @Override
+                public void Failure(String error) {
+
+                }
+            });
+
+        }
+
+    }
+
+
+    public void setQuestionDatas() {
+
+        txtViewPageCount.setText(String.valueOf(tokenNo));
+
+        ArrayList<GeneralModel> questionsModelsArray = new ArrayList<>();
+        for (int i = ((tokenNo - 1) * 10); i < (tokenNo * 10) && i < generalQuestionDatasArray.size(); i++) {
+            questionsModelsArray.add(generalQuestionDatasArray.get(i));
+        }
 
         LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation_fall_down);
         recyclerViewDatas.setLayoutAnimation(controller);
 
-        generalQuizAdapter = new GeneralQuizAdapter(context, generalDatas, tokenNo);
+        generalQuizAdapter = new GeneralQuizAdapter(context, questionsModelsArray, tokenNo-1);
         recyclerViewDatas.setAdapter(generalQuizAdapter);
 
     }
 
     public void setPagerDatas() {
 
-        pageLimit = (int) Integer.valueOf(HomeActivity.INSTANCE.myDao().getGeneralDatasCount(status))/10;
+        pageLimit = generalQuestionDatasArray.size() / 10;
 
-        if (!TextUtils.isEmpty(status)) {
+        if (!TextUtils.isEmpty(dataUrl)) {
             generalQuizPagerData = new GeneralQuizPagerDataAdapter(GeneralActivity.this, context, pageLimit);
             recyclerViewPager.setAdapter(generalQuizPagerData);
         }
@@ -259,10 +257,10 @@ public class GeneralActivity extends AppCompatActivity implements GeneralQuizInt
     @Override
     public void OnTokenButtonTapped(int position) {
 
-        tokenNo = (position);
-        generalQuizPagerData.reloadPager(tokenNo+1);
+        tokenNo = (position)+1;
+        generalQuizPagerData.reloadPager(tokenNo);
         layoutPopUp.setVisibility(View.GONE);
-        setDatas();
+        setQuestionDatas();
 
     }
 }

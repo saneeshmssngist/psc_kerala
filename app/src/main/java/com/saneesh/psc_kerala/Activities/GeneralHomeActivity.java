@@ -3,13 +3,9 @@ package com.saneesh.psc_kerala.Activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
@@ -17,30 +13,25 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.saneesh.psc_kerala.DataManager;
 import com.saneesh.psc_kerala.Interfaces.RetrofitCallBack;
-import com.saneesh.psc_kerala.Model.GeneralModel;
-import com.saneesh.psc_kerala.Model.GeneralTable;
+import com.saneesh.psc_kerala.Model.GeneralHome;
+import com.saneesh.psc_kerala.NetworkConnection;
 import com.saneesh.psc_kerala.R;
-import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.ArrayList;
 
-import static com.saneesh.psc_kerala.Activities.HomeActivity.INSTANCE;
 import static com.saneesh.psc_kerala.Base.setStatusBarGradiant;
 
-public class GeneralHomeActivity extends AppCompatActivity implements View.OnClickListener {
+public class GeneralHomeActivity extends BaseActivity implements View.OnClickListener {
 
 
     private CardView cardViewKerala, cardViewIndia, cardViewWorld, cardViewHistory, cardViewGeography,
             cardViewSports, cardViewMaths, cardViewMovies, cardViewScience, cardViewLiterature;
-    private Toolbar toolBar;
-
-    private LinearLayout layoutProgress;
-    private AVLoadingIndicatorView avilayoutProgress;
 
     private SharedPreferences pref;
     private Context context;
 
     private AdView adMobView;
+    private ArrayList<GeneralHome> generalDatasHome = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +45,13 @@ public class GeneralHomeActivity extends AppCompatActivity implements View.OnCli
         setActionBar();
         initControl();
 
+        //  setUpAdmob();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         setDatas();
-      //  setUpAdmob();
     }
 
     private void setUpAdmob() {
@@ -71,84 +67,45 @@ public class GeneralHomeActivity extends AppCompatActivity implements View.OnCli
 
     public void setDatas() {
 
-        pref = getSharedPreferences("ActivityPREF", Context.MODE_PRIVATE);
-        if (pref.getBoolean("general_executed", false)) {
+//        pref = getSharedPreferences("ActivityPREF", Context.MODE_PRIVATE);
+//        if (pref.getBoolean("general_executed", false)) {
+//
+//            return;
+//
+//        } else {
 
-            return;
+        NetworkConnection networkConnection = new NetworkConnection();
+        if (!networkConnection.isConnected(GeneralHomeActivity.this)) {
+            startActivity(new Intent(GeneralHomeActivity.this, NetworkStateActivity.class));
 
         } else {
 
-            layoutProgress.setVisibility(View.VISIBLE);
-            avilayoutProgress.show();
-
-            DataManager.getDatamanager().getGeneralDatas(new RetrofitCallBack<ArrayList<GeneralModel>>() {
+            showProgress();
+            DataManager.getDatamanager().getGeneralHomeDatas(new RetrofitCallBack<ArrayList<GeneralHome>>() {
                 @Override
-                public void Success(ArrayList<GeneralModel> generalDatas) {
+                public void Success(ArrayList<GeneralHome> generalDatas) {
 
-                    if (generalDatas.size() != 0) {
-                        insertDataToDb(generalDatas);
-                    } else {
-                        Toast.makeText(context, "No datas there !!", Toast.LENGTH_SHORT).show();
-                    }
+                    hideProgress();
+                    generalDatasHome = generalDatas;
+
                 }
-
                 @Override
                 public void Failure(String error) {
 
-                    avilayoutProgress.smoothToHide();
-                    layoutProgress.setVisibility(View.GONE);
+                    hideProgress();
                     Toast.makeText(context, "Network connection needed !!", Toast.LENGTH_SHORT).show();
                 }
             });
-
         }
-    }
-
-    private void insertDataToDb(final ArrayList<GeneralModel> generalDatas) {
-
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... params) {
-
-                for (int i = 0; i < generalDatas.size(); i++) {
-
-                    GeneralTable generalTable = new GeneralTable();
-                    generalTable.setId(Integer.parseInt(generalDatas.get(i).getId()));
-                    generalTable.setQuestion(generalDatas.get(i).getQuestion());
-                    generalTable.setAnswer(generalDatas.get(i).getAnswer());
-                    generalTable.setStatus(generalDatas.get(i).getStatus());
-
-                    INSTANCE.myDao().addGeneralDatas(generalTable);
-
-                }
-
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-
-                avilayoutProgress.smoothToHide();
-                layoutProgress.setVisibility(View.GONE);
-
-                SharedPreferences.Editor edt = pref.edit();
-                edt.putBoolean("general_executed", true);
-                edt.commit();
-            }
-        }.execute();
 
     }
 
     public void setActionBar() {
 
-        toolBar = findViewById(R.id.toolBar);
-        setSupportActionBar(toolBar);
-        getSupportActionBar().setTitle("Read to Learn");
+        setToolBar("Read to Learn");
     }
 
     public void getViews() {
-        layoutProgress = findViewById(R.id.layoutProgress);
-        avilayoutProgress = findViewById(R.id.avilayoutProgress);
 
         cardViewKerala = (CardView) findViewById(R.id.cardViewKerala);
         cardViewIndia = (CardView) findViewById(R.id.cardViewIndia);
@@ -181,47 +138,57 @@ public class GeneralHomeActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onClick(View v) {
 
-        pref = getSharedPreferences("ActivityPREF", Context.MODE_PRIVATE);
-        if (pref.getBoolean("general_executed", false)) {
-
+        if (generalDatasHome.size() != 0) {
             int id = v.getId();
+
 
             Intent intent = new Intent(this, GeneralActivity.class);
 
             switch (id) {
                 case R.id.cardViewKerala:
-                    intent.putExtra("status", "10");
+                    intent.putExtra("dataUrl", generalDatasHome.get(0).getUrl())
+                            .putExtra("name", getResources().getString(R.string.kerala));
                     break;
                 case R.id.cardViewIndia:
-                    intent.putExtra("status", "3");
+                    intent.putExtra("dataUrl", generalDatasHome.get(1).getUrl())
+                            .putExtra("name", getResources().getString(R.string.india));
                     break;
                 case R.id.cardViewWorld:
-                    intent.putExtra("status", "7");
+                    intent.putExtra("dataUrl", generalDatasHome.get(2).getUrl())
+                            .putExtra("name", getResources().getString(R.string.world));
                     break;
                 case R.id.cardViewHistory:
-                    intent.putExtra("status", "2");
+                    intent.putExtra("dataUrl", generalDatasHome.get(3).getUrl())
+                            .putExtra("name", getResources().getString(R.string.history));
                     break;
                 case R.id.cardViewGeography:
-                    intent.putExtra("status", "1");
+                    intent.putExtra("dataUrl", generalDatasHome.get(4).getUrl())
+                            .putExtra("name", getResources().getString(R.string.geography));
                     break;
                 case R.id.cardViewSports:
-                    intent.putExtra("status", "6");
+                    intent.putExtra("dataUrl", generalDatasHome.get(5).getUrl())
+                            .putExtra("name", getResources().getString(R.string.sports));
                     break;
                 case R.id.cardViewMaths:
-                    intent.putExtra("status", "5");
+                    intent.putExtra("dataUrl", generalDatasHome.get(6).getUrl())
+                            .putExtra("name", getResources().getString(R.string.maths));
                     break;
                 case R.id.cardViewMovies:
-                    intent.putExtra("status", "4");
+                    intent.putExtra("dataUrl", generalDatasHome.get(7).getUrl())
+                            .putExtra("name", getResources().getString(R.string.movies));
                     break;
                 case R.id.cardViewScience:
-                    intent.putExtra("status", "11");
+                    intent.putExtra("dataUrl", generalDatasHome.get(8).getUrl())
+                            .putExtra("name", getResources().getString(R.string.science));
                     break;
                 case R.id.cardViewLiterature:
-                    intent.putExtra("status", "9");
+                    intent.putExtra("dataUrl", generalDatasHome.get(9).getUrl())
+                            .putExtra("name", getResources().getString(R.string.literature));
                     break;
             }
 
             startActivity(intent);
+
         }
     }
 

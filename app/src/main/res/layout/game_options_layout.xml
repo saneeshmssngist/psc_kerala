@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#00000000"
+        android:id="@+id/layoutMain"
+>
+
+    <ImageView
+            android:id="@+id/imgView1"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/optionss"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="5dp"
+            android:onClick="optionsLayoutClick"
+    />
+
+    <RelativeLayout
+            android:id="@+id/layoutSound"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_toLeftOf="@+id/imgView1"
+            android:layout_marginRight="45dp"
+            android:src="@drawable/ic_volume_off"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:padding="2dp"
+            android:onClick="soundOptionClick"
+            android:background="@drawable/pop_option1"
+            android:layout_marginBottom="5dp"
+            android:alpha="0.5"
+    >
+        <ImageView
+                android:id="@+id/imgSound"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_volume_up"
+                android:padding="7dp"
+                android:alpha="0.6"
+        />
+    </RelativeLayout>
+
+    <RelativeLayout
+            android:id="@+id/layoutShare"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginRight="45dp"
+            android:layout_toRightOf="@+id/imgView1"
+            android:layout_marginLeft="45dp"
+            android:src="@drawable/optionss"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="5dp"
+            android:onClick="shareOptionClick"
+            android:background="@drawable/pop_option1"
+            android:alpha="0.5"
+    >
+        <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_share"
+                android:padding="10dp"
+                android:alpha="0.6"
+        />
+    </RelativeLayout>
+
+    <RelativeLayout
+            android:id="@+id/layoutReload"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_toRightOf="@+id/imgView1"
+            android:layout_above="@+id/layoutShare"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/optionss"
+            android:onClick="reloadOptionClick"
+            android:background="@drawable/pop_option1"
+    >
+        <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_refresh"
+                android:padding="8dp"
+                android:alpha="0.6"
+        />
+    </RelativeLayout>
+
+    <RelativeLayout
+            android:id="@+id/layoutView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_above="@+id/layoutReload"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/pop_option1"
+            android:padding="2dp"
+            android:onClick="viewOptionClick"
+            android:layout_marginBottom="-20dp"
+    >
+        <ImageView android:layout_width="match_parent"
+                   android:layout_height="match_parent"
+                   android:src="@drawable/ic_remove"
+                   android:padding="7dp"
+                   android:alpha="0.6"
+        />
+    </RelativeLayout>
+
+    <RelativeLayout
+            android:id="@+id/layoutFifty"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_toLeftOf="@+id/imgView1"
+            android:layout_above="@+id/layoutSound"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="10dp"
+            android:onClick="fiftyOptionClick"
+            android:background="@drawable/pop_option1"
+    >
+        <TextView android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:text="50:50"
+                  android:gravity="center"
+                  android:textSize="14sp"
+                  android:textColor="@color/white"
+                  android:padding="3dp"
+                  android:alpha="0.6"
+        />
+    </RelativeLayout>
+
+
+</RelativeLayout>

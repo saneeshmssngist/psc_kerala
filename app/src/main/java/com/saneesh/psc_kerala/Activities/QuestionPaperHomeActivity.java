@@ -17,10 +17,12 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 import com.saneesh.psc_kerala.Adapters.QuestionHomeAdapter;
+import com.saneesh.psc_kerala.Base;
 import com.saneesh.psc_kerala.DataManager;
 import com.saneesh.psc_kerala.Interfaces.RetrofitCallBack;
 import com.saneesh.psc_kerala.Model.QuestionPaperHome;
 import com.saneesh.psc_kerala.Model.QuestionsModel;
+import com.saneesh.psc_kerala.NetworkConnection;
 import com.saneesh.psc_kerala.R;
 import com.wang.avi.AVLoadingIndicatorView;
 
@@ -28,15 +30,11 @@ import java.util.ArrayList;
 
 import static com.saneesh.psc_kerala.Base.setStatusBarGradiant;
 
-public class QuestionPaperHomeActivity extends AppCompatActivity {
+public class QuestionPaperHomeActivity extends BaseActivity {
 
-
-    private LinearLayout layoutProgress;
-    private AVLoadingIndicatorView avilayoutProgress;
 
     QuestionHomeAdapter questionHomeAdapter;
     RecyclerView recyclerView;
-    private Toolbar toolBar;
 
     private SharedPreferences pref;
     private AdView adMobView;
@@ -51,12 +49,17 @@ public class QuestionPaperHomeActivity extends AppCompatActivity {
 
         setStatusBarGradiant(this);
         getViews();
-        setActionBar();
+        setToolBar("Question Papers");
 
         initControl();
-        setDatas();
 
 //        setUpAdmob();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        setDatas();
     }
 
     private void setUpAdmob() {
@@ -73,18 +76,8 @@ public class QuestionPaperHomeActivity extends AppCompatActivity {
 
     }
 
-    public void setActionBar() {
-
-        toolBar = findViewById(R.id.toolBar);
-        setSupportActionBar(toolBar);
-        getSupportActionBar().setTitle("Question Papers");
-
-    }
 
     private void getViews() {
-
-        layoutProgress = findViewById(R.id.layoutProgress);
-        avilayoutProgress = findViewById(R.id.avilayoutProgress);
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -110,26 +103,31 @@ public class QuestionPaperHomeActivity extends AppCompatActivity {
 
     public void setDatas()
     {
-        layoutProgress.setVisibility(View.VISIBLE);
-        avilayoutProgress.show();
 
-        DataManager.getDatamanager().getQuestionPaperHomeDatas(new RetrofitCallBack<ArrayList<QuestionPaperHome>>() {
-            @Override
-            public void Success(final ArrayList<QuestionPaperHome> questionPaperHomesArray) {
+        NetworkConnection networkConnection = new NetworkConnection();
+        if (!networkConnection.isConnected(QuestionPaperHomeActivity.this)) {
+            startActivity(new Intent(QuestionPaperHomeActivity.this, NetworkStateActivity.class));
 
-                layoutProgress.setVisibility(View.GONE);
-                avilayoutProgress.hide();
+        } else {
 
-                questionPaperArray = questionPaperHomesArray;
-                questionHomeAdapter.update(questionPaperHomesArray);
+            showProgress();
+            DataManager.getDatamanager().getQuestionPaperHomeDatas(new RetrofitCallBack<ArrayList<QuestionPaperHome>>() {
+                @Override
+                public void Success(final ArrayList<QuestionPaperHome> questionPaperHomesArray) {
 
-            }
-            @Override
-            public void Failure(String error) {
-                layoutProgress.setVisibility(View.GONE);
-                avilayoutProgress.hide();
-            }
-        });
+                    hideProgress();
+
+                    questionPaperArray = questionPaperHomesArray;
+                    questionHomeAdapter.update(questionPaperHomesArray);
+
+                }
+
+                @Override
+                public void Failure(String error) {
+                    hideProgress();
+                }
+            });
+        }
 
     }
 

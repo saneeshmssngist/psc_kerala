@@ -1,11 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.Toolbar
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="45dp"
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/toolBar"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
     android:background="@drawable/tool_bar_bg"
-    >
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/layoutBack"
+        android:layout_width="40dp"
+        android:layout_height="match_parent"
+        android:onClick="onBackPressed"
+        android:gravity="center_vertical"
+        >
+        <ImageView
+            android:id="@+id/imgView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_arrow_white"
+            android:layout_centerVertical="true"
+            />
+
+    </RelativeLayout>
+
+        <TextView
+            android:id="@+id/txtHead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:layout_toRightOf="@+id/layoutBack"
+            android:text="dsadsadas"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:lines="1"
+            />
+
 
 </android.support.v7.widget.Toolbar>

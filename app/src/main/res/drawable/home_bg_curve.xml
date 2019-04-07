@@ -4,16 +4,16 @@
         <shape android:shape="rectangle"/>
     </item>
     <item
-        android:bottom="0dp"
-        android:left="-100dp"
-        android:right="-100dp"
-        android:top="-80dp">
+        android:bottom="-150dp"
+        android:left="-180dp"
+        android:right="-180dp"
+        android:top="0dp">
         <shape android:shape="oval">
 
             <gradient
-                android:startColor="#ed328a"
-                android:centerColor="#a43a9c"
-                android:endColor="#a43a9c"
+                android:startColor="#ffffff"
+                android:centerColor="#ffffff"
+                android:endColor="#ffffff"
                 />
 
         </shape>

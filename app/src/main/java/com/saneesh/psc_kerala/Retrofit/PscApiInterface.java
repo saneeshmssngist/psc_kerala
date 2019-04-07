@@ -1,6 +1,8 @@
 package com.saneesh.psc_kerala.Retrofit;
 
 import com.saneesh.psc_kerala.Model.BaseUrl;
+import com.saneesh.psc_kerala.Model.DailyQuiz;
+import com.saneesh.psc_kerala.Model.GeneralHome;
 import com.saneesh.psc_kerala.Model.GeneralModel;
 import com.saneesh.psc_kerala.Model.QuestionPaperHome;
 import com.saneesh.psc_kerala.Model.QuestionsModel;
@@ -33,6 +35,9 @@ public interface PscApiInterface {
 
     @GET
     Call<ResponseResult<QuestionsModel>> getGameData(@Url String s);
+
+    @GET
+    Call<ResponseResult<ArrayList<GeneralHome>>> getGeneralHomeDatas(@Url String s);
 
     @GET
     Call<ResponseResult<GeneralModel>> getGeneralData(@Url String s);
@@ -69,6 +74,12 @@ public interface PscApiInterface {
 
     @GET
     Call<ResponseResult<ArrayList<TrollHome>>> getPscTrollHomeDatas(@Url String masterUrl);
+
+    @GET
+    Call<ResponseResult<ArrayList<DailyQuiz>>> getDailyQuizHomeDatas(@Url String url);
+
+    @GET
+    Call<ResponseResult<QuestionsModel>> fetchDailyQuizDatas(@Url String quizUrl);
 
 
 }

@@ -26,9 +26,9 @@ import java.util.List;
 public class TopicHomeAdapter extends RecyclerView.Adapter<TopicHomeAdapter.TopicHolder> {
 
     Context context;
-    List<TopicTable> topicModelsArray;
+    ArrayList<TopicModel> topicModelsArray;
 
-    public TopicHomeAdapter(Context context, List<TopicTable> topicModelsArray) {
+    public TopicHomeAdapter(Context context, ArrayList<TopicModel> topicModelsArray) {
         this.context = context;
         this.topicModelsArray = topicModelsArray;
     }
@@ -49,12 +49,12 @@ public class TopicHomeAdapter extends RecyclerView.Adapter<TopicHomeAdapter.Topi
     @Override
     public void onBindViewHolder(TopicHolder holder, int position) {
 
-        TopicTable topicModel = topicModelsArray.get(position);
-        holder.txtContentHome.setText(topicModel.getTopicTitle());
+        TopicModel topicModel = topicModelsArray.get(position);
+        holder.txtContentHome.setText(topicModel.getTopicName());
 
         Glide
                 .with(context)
-                .load(topicModel.getUrl())
+                .load(topicModel.getImageUrl())
                 .into(holder.imageView);
 
     }
@@ -73,9 +73,7 @@ public class TopicHomeAdapter extends RecyclerView.Adapter<TopicHomeAdapter.Topi
                 public void onClick(View v) {
 
                     Intent intent = new Intent(context, TopicActivity.class);
-                    intent.putExtra("topicId",String.valueOf(topicModelsArray.get(getAdapterPosition()).getId()));
-                    intent.putExtra("imageUrl",topicModelsArray.get(getAdapterPosition()).getUrl());
-                    intent.putExtra("topicName",topicModelsArray.get(getAdapterPosition()).getTopicTitle());
+                    intent.putExtra("contents_data",topicModelsArray.get(getAdapterPosition()));
                     context.startActivity(intent);
 
                 }

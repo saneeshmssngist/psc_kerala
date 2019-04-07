@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 public class GeneralModel
 {
+    @SerializedName("q_number")
     String id;
 
     String question;

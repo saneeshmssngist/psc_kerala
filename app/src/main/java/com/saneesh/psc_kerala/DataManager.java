@@ -4,6 +4,8 @@ import android.content.Context;
 
 import com.saneesh.psc_kerala.Interfaces.RetrofitCallBack;
 import com.saneesh.psc_kerala.Model.BaseUrl;
+import com.saneesh.psc_kerala.Model.DailyQuiz;
+import com.saneesh.psc_kerala.Model.GeneralHome;
 import com.saneesh.psc_kerala.Model.GeneralModel;
 import com.saneesh.psc_kerala.Model.QuestionPaperHome;
 import com.saneesh.psc_kerala.Model.QuestionsModel;
@@ -102,9 +104,37 @@ public class DataManager {
 
     }
 
-    public void getGeneralDatas(final RetrofitCallBack<ArrayList<GeneralModel>> retrofitCallBack) {
+    public void getGeneralHomeDatas(final RetrofitCallBack<ArrayList<GeneralHome>> retrofitCallBack) {
 
-        Call<ResponseResult<GeneralModel>> resultCall = cabApiInterface.getGeneralData("https://raw.githubusercontent.com/saneeshmssngist/psc_datas/master/general_data.txt");
+        Call<ResponseResult<ArrayList<GeneralHome>>> resultCall = cabApiInterface.getGeneralHomeDatas(AppConstants.GENERAL_HOME);
+
+        resultCall.enqueue(new Callback<ResponseResult<ArrayList<GeneralHome>>>() {
+            @Override
+            public void onResponse(Call<ResponseResult<ArrayList<GeneralHome>>> call, Response<ResponseResult<ArrayList<GeneralHome>>> response) {
+
+                if (response.isSuccessful()) {
+                    if (response.body().getCode().equals("100")) {
+                        retrofitCallBack.Success(response.body().getData());
+                    } else {
+                        retrofitCallBack.Failure(response.body().getStatus());
+                    }
+                } else {
+                    retrofitCallBack.Failure("Some error happened !!");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseResult<ArrayList<GeneralHome>>> call, Throwable t) {
+
+                retrofitCallBack.Failure("Some error happened !!");
+            }
+        });
+    }
+
+
+    public void getGeneralData(String url,final RetrofitCallBack<ArrayList<GeneralModel>> retrofitCallBack) {
+
+        Call<ResponseResult<GeneralModel>> resultCall = cabApiInterface.getGeneralData(url);
 
         resultCall.enqueue(new Callback<ResponseResult<GeneralModel>>() {
             @Override
@@ -123,33 +153,6 @@ public class DataManager {
 
             @Override
             public void onFailure(Call<ResponseResult<GeneralModel>> call, Throwable t) {
-
-                retrofitCallBack.Failure("Some error happened !!");
-            }
-        });
-    }
-
-    public void getGeneralDatasCount(String generalType, final RetrofitCallBack<String> retrofitCallBack) {
-
-        Call<ResponseResult> resultCall = cabApiInterface.getGeneralDataCount(generalType);
-
-        resultCall.enqueue(new Callback<ResponseResult>() {
-            @Override
-            public void onResponse(Call<ResponseResult> call, Response<ResponseResult> response) {
-
-                if (response.isSuccessful()) {
-                    if (response.body().getCode().equals("100")) {
-                        retrofitCallBack.Success(response.body().getData().toString());
-                    } else {
-                        retrofitCallBack.Failure(response.body().getStatus());
-                    }
-                } else {
-                    retrofitCallBack.Failure("Some error happened !!");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseResult> call, Throwable t) {
 
                 retrofitCallBack.Failure("Some error happened !!");
             }
@@ -238,7 +241,7 @@ public class DataManager {
 
     public void getTopicHomeDatas(final RetrofitCallBack<TopicModel> retrofitCallBack) {
 
-        Call<ResponseResult<TopicModel>> resultCall = cabApiInterface.getTopicHomeDatas("https://raw.githubusercontent.com/saneeshmssngist/psc_datas/master/get_topic_names.txt");
+        Call<ResponseResult<TopicModel>> resultCall = cabApiInterface.getTopicHomeDatas("https://raw.githubusercontent.com/saneeshmssngist/psc_datas/master/PSC_reloaded/topic_home_datas.txt");
 
         resultCall.enqueue(new Callback<ResponseResult<TopicModel>>() {
             @Override
@@ -369,7 +372,61 @@ public class DataManager {
                 retrofitCallBack.Failure("Some error happened !!");
             }
         });
+    }
 
+    public void getDailyQuizHomeDatas(final RetrofitCallBack<ArrayList<DailyQuiz>> retrofitCallBack) {
+
+        Call<ResponseResult<ArrayList<DailyQuiz>>> resultCall = cabApiInterface.getDailyQuizHomeDatas(AppConstants.DAILYQUIZ_HOME);
+
+        resultCall.enqueue(new Callback<ResponseResult<ArrayList<DailyQuiz>>>() {
+            @Override
+            public void onResponse(Call<ResponseResult<ArrayList<DailyQuiz>>> call, Response<ResponseResult<ArrayList<DailyQuiz>>> response) {
+
+                if (response.isSuccessful()) {
+                    if (response.body().getCode().equals("100")) {
+                        retrofitCallBack.Success(response.body().getData());
+                    } else {
+                        retrofitCallBack.Failure(response.body().getStatus());
+                    }
+                } else {
+                    retrofitCallBack.Failure("Some error happened !!");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseResult<ArrayList<DailyQuiz>>> call, Throwable t) {
+
+                retrofitCallBack.Failure("Some error happened !!");
+            }
+        });
+
+    }
+
+
+    public void fetchDailyQuizDatas(final String quizUrl, final RetrofitCallBack<ArrayList<QuestionsModel>> retrofitCallBack) {
+
+        Call<ResponseResult<QuestionsModel>> resultCall = cabApiInterface.fetchDailyQuizDatas(quizUrl);
+        resultCall.enqueue(new Callback<ResponseResult<QuestionsModel>>() {
+            @Override
+            public void onResponse(Call<ResponseResult<QuestionsModel>> call, Response<ResponseResult<QuestionsModel>> response) {
+
+                if (response.isSuccessful()) {
+                    if (response.body().getCode().equals("100")) {
+                        retrofitCallBack.Success(response.body().getData().getDailyQuizDatas());
+                    } else {
+                        retrofitCallBack.Failure(response.body().getStatus());
+                    }
+                } else {
+                    retrofitCallBack.Failure("Some error happened !!");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseResult<QuestionsModel>> call, Throwable t) {
+
+                retrofitCallBack.Failure("Some error happened !!");
+            }
+        });
     }
 
 

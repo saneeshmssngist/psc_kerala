@@ -37,4 +37,55 @@ public class Session {
         return sharedPreferences.getBoolean(key, false);
     }
 
+    public static void setCorrectAns(int value) {
+        if (value == 0)
+            editor.putInt("correct", 0).apply();
+        else
+            editor.putInt("correct", getCorrectAns() + value).apply();
+    }
+
+    public static int getCorrectAns() {
+        return sharedPreferences.getInt("correct", 0);
+    }
+
+    public static void setSkippedAns(int value) {
+        if (value == 0)
+            editor.putInt("skipped", 0).apply();
+        else
+            editor.putInt("skipped", getSkippedAns() + value).apply();
+    }
+
+    public static int getSkippedAns() {
+        return sharedPreferences.getInt("skipped", 0);
+    }
+
+    public static void setWrongAns(int value) {
+        if (value == 0)
+            editor.putInt("wrong", 0).apply();
+        else
+            editor.putInt("wrong", getWrongAns() + value).apply();
+    }
+
+    public static int getWrongAns() {
+        return sharedPreferences.getInt("wrong", 0);
+    }
+
+    public static void setTotQuestions(int value) {
+        editor.putInt("total", value).apply();
+    }
+
+    public static int getTotQuestions() {
+        return sharedPreferences.getInt("total", 0);
+    }
+
+    public static void setUserName(String value) {
+        editor.putString("name", value).apply();
+    }
+
+    public static String getUserName() {
+        return sharedPreferences.getString("name","");
+    }
+
+
+
 }

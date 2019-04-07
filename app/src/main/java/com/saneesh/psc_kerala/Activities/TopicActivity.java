@@ -24,25 +24,18 @@ import com.saneesh.psc_kerala.Model.TopicModel;
 import com.saneesh.psc_kerala.R;
 import com.wang.avi.AVLoadingIndicatorView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TopicActivity extends AppCompatActivity {
+public class TopicActivity extends BaseActivity {
 
-    private LinearLayout layoutProgress;
-    private AVLoadingIndicatorView avilayoutProgress;
-
-    private String topicId;
-    private ImageView imgTopicImage;
     private RecyclerView recyclerViewTopic;
-    private Toolbar toolbar;
     private ImageView imageView;
     private TextView txtTitle;
 
-    private String imageUrl = "";
-    private String topicName = "";
-
     private AdView adMobView;
+    private TopicModel topicData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,9 +44,7 @@ public class TopicActivity extends AppCompatActivity {
 
         Base.setStatusBarGradiant(this);
 
-        topicId = getIntent().getStringExtra("topicId");
-        imageUrl = getIntent().getStringExtra("imageUrl");
-        topicName = getIntent().getStringExtra("topicName");
+        topicData = (TopicModel) getIntent().getSerializableExtra("contents_data");
 
         getViews();
         setData();
@@ -74,14 +65,10 @@ public class TopicActivity extends AppCompatActivity {
     private void getViews()
     {
 
-        toolbar = findViewById(R.id.toolBar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Topic Learn");
+       setToolBar("Topic Learn");
 
         txtTitle = findViewById(R.id.txtTitle);
         imageView = findViewById(R.id.imageView);
-        layoutProgress = findViewById(R.id.layoutProgress);
-        avilayoutProgress = findViewById(R.id.avilayoutProgress);
 
 //        imgTopicImage = findViewById(R.id.imgTopicImage);
         recyclerViewTopic = findViewById(R.id.recyclerViewTopic);
@@ -92,16 +79,14 @@ public class TopicActivity extends AppCompatActivity {
     public void setData()
     {
 
-        txtTitle.setText(topicName);
+        txtTitle.setText(topicData.getTopicName());
 
         Glide
                 .with(this)
-                .load(imageUrl)
+                .load(topicData.getImageUrl())
                 .into(imageView);
 
-        List<String> topicDatas = HomeActivity.INSTANCE.myDao().getTopicContents(topicId);
-
-        TopicAdapter topicAdapter = new TopicAdapter(this,topicDatas);
+        TopicAdapter topicAdapter = new TopicAdapter(this,topicData.getContent());
         recyclerViewTopic.setAdapter(topicAdapter);
     }
 

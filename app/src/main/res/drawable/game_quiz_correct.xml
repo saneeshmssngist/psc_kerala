@@ -5,7 +5,7 @@
     >
 
     <corners
-        android:radius="30dp"
+        android:radius="5dp"
         />
 
     <gradient
@@ -14,9 +14,5 @@
         android:endColor="@color/green"
         />
 
-    <stroke
-        android:width="1dp"
-        android:color="@color/black"
-        />
 
 </shape>

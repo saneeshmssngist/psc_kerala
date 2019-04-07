@@ -1,24 +1,22 @@
 package com.saneesh.psc_kerala.Activities;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.crashlytics.android.Crashlytics;
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -29,20 +27,15 @@ import com.saneesh.psc_kerala.Model.QuestionsModel;
 import com.saneesh.psc_kerala.Model.QuizTable;
 import com.saneesh.psc_kerala.R;
 import com.saneesh.psc_kerala.RoomDatabaseRoom;
-import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import io.fabric.sdk.android.Fabric;
+public class HomeActivity extends BaseActivity implements View.OnClickListener {
 
-public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private LinearLayout layoutProgress;
-    private AVLoadingIndicatorView avilayoutProgress;
-
-    private Toolbar toolbar;
-    private RelativeLayout layoutGame, layoutRead, layoutQPapers, layoutMockTest, layoutTopicLearn, layotShareApp;
+    private RelativeLayout layoutMockTest, layoutRead, layoutQPapers, layoutInfinityQuiz, layoutTopicLearn,
+            layotShareApp, layoutDailyQuiz, layottroll;
     private TextView txtView1;
 
     private Context context;
@@ -63,9 +56,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         context = this;
         Base.setStatusBarGradiant(this);
+
+        FirebaseMessaging.getInstance().subscribeToTopic("quizrr_fcm_message");
+
 //        Fabric.with(this, new Crashlytics());
 
-       // setUpAdmob();
+        // setUpAdmob();
         //message topic ...
         FirebaseMessaging.getInstance().subscribeToTopic("fcm_message");
         pref = getSharedPreferences("ActivityPREF", Context.MODE_PRIVATE);
@@ -102,13 +98,17 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     public void setDatas() {
 
-        layoutProgress.setVisibility(View.VISIBLE);
-        avilayoutProgress.show();
 
+        showProgress();
         DataManager.getDatamanager().getDatas(new RetrofitCallBack<ArrayList<QuestionsModel>>() {
             @Override
             public void Success(ArrayList<QuestionsModel> questionsModels) {
 
+                SharedPreferences.Editor edt = pref.edit();
+                edt.putBoolean("quiz_executed", true);
+                edt.commit();
+
+                hideProgress();
                 questionModelDatasArray = questionsModels;
                 setQuestionDatas();
                 //  Toast.makeText(SAmple.this,status,Toast.LENGTH_SHORT).show();
@@ -117,9 +117,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void Failure(String error) {
 
-                avilayoutProgress.smoothToHide();
-                layoutProgress.setVisibility(View.GONE);
-
+                hideProgress();
                 Toast.makeText(HomeActivity.this, error, Toast.LENGTH_SHORT).show();
             }
         });
@@ -149,6 +147,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 //                    table.setOption4(questionDatasArray.get(i).getOption4());
 //                    table.setAnswer(questionDatasArray.get(i).getAnswer());
 //                    table.setFlag(questionDatasArray.get(i).getStatus());
+                    Log.d("QUIZZ", "doInBackground: " + i);
 
                     HomeActivity.INSTANCE.myDao().addQuizQuestions(questionTableDatasArray.get(i));
                 }
@@ -158,12 +157,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             protected void onPostExecute(Void aVoid) {
 
-                avilayoutProgress.smoothToHide();
-                layoutProgress.setVisibility(View.GONE);
-
-                SharedPreferences.Editor edt = pref.edit();
-                edt.putBoolean("quiz_executed", true);
-                edt.commit();
             }
 
         }.execute();
@@ -173,27 +166,30 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     private void getViews() {
 
-        layoutProgress = findViewById(R.id.layoutProgress);
-        avilayoutProgress = findViewById(R.id.avilayoutProgress);
+//        setToolBarNoBack("");
 
-        layoutGame = (RelativeLayout) findViewById(R.id.layoutGame);
+        layoutMockTest = (RelativeLayout) findViewById(R.id.layoutMockTest);
         layoutRead = (RelativeLayout) findViewById(R.id.layoutRead);
         layoutQPapers = (RelativeLayout) findViewById(R.id.layoutQPapers);
 
-        layoutMockTest = (RelativeLayout) findViewById(R.id.layoutMockTest);
+        layoutInfinityQuiz = (RelativeLayout) findViewById(R.id.layoutInfinityQuiz);
         layoutTopicLearn = (RelativeLayout) findViewById(R.id.layoutTopicLearn);
         layotShareApp = (RelativeLayout) findViewById(R.id.layotShareApp);
+        layoutDailyQuiz = (RelativeLayout) findViewById(R.id.layoutDailyQuiz);
+        layottroll = (RelativeLayout) findViewById(R.id.layottroll);
 
         txtView1 = (TextView) findViewById(R.id.txtView1);
     }
 
     private void initControl() {
 
-        layoutGame.setOnClickListener(this);
-        layoutRead.setOnClickListener(this);
         layoutMockTest.setOnClickListener(this);
+        layoutRead.setOnClickListener(this);
+        layoutInfinityQuiz.setOnClickListener(this);
         layoutTopicLearn.setOnClickListener(this);
         layoutQPapers.setOnClickListener(this);
+        layoutDailyQuiz.setOnClickListener(this);
+        layottroll.setOnClickListener(this);
         layotShareApp.setOnClickListener(this);
 
     }
@@ -202,83 +198,52 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
 
         pref = getSharedPreferences("ActivityPREF", Context.MODE_PRIVATE);
-        if (pref.getBoolean("quiz_executed", false)) {
 
-            int id = v.getId();
+        int id = v.getId();
 
-            switch (id) {
-                case R.id.layoutGame:
-                    startActivity(new Intent(this, GameActivity.class));
-                    break;
-                case R.id.layoutRead:
-                    startActivity(new Intent(this, GeneralHomeActivity.class));
-                    break;
-                case R.id.layoutMockTest:
+        switch (id) {
+            case R.id.layoutMockTest:
+                if (pref.getBoolean("quiz_executed", false))
                     startActivity(new Intent(this, MockHomeActivity.class));
-                    break;
-                case R.id.layoutTopicLearn:
-                    startActivity(new Intent(this, TopicHomeActivity.class));
-                    break;
-                case R.id.layoutQPapers:
-                    startActivity(new Intent(this, QuestionPaperHomeActivity.class));
-                    break;
-                case R.id.layotShareApp:
+                break;
+            case R.id.layoutInfinityQuiz:
+                if (pref.getBoolean("quiz_executed", false))
+                    startActivity(new Intent(this, InfinityQuizActivity.class));
+                break;
+            case R.id.layoutRead:
+                startActivity(new Intent(this, GeneralHomeActivity.class));
+                break;
 
-                    startActivity(new Intent(this,TrollsHomeActivity.class));
+            case R.id.layoutTopicLearn:
+                startActivity(new Intent(this, TopicHomeActivity.class));
+                break;
+            case R.id.layoutQPapers:
+                startActivity(new Intent(this, QuestionPaperHomeActivity.class));
+                break;
+            case R.id.layoutDailyQuiz:
+                startActivity(new Intent(this, DailyQuizHomeActivity.class));
+                break;
+            case R.id.layottroll:
+                startActivity(new Intent(this, TrollsHomeActivity.class));
+                break;
+            case R.id.layotShareApp:
+                shareApp();
+                break;
 
-//                    shareAPp();
-                    break;
-
-            }
         }
 
     }
 
-    private void shareAPp() {
 
-
-        if (pref.getString("shareLink", "false").equals("false")) {
-
-            layoutProgress.setVisibility(View.VISIBLE);
-            avilayoutProgress.show();
-
-            DataManager.getDatamanager().getShareLink(new RetrofitCallBack<String>() {
-                @Override
-                public void Success(String response) {
-
-                    avilayoutProgress.smoothToHide();
-                    layoutProgress.setVisibility(View.GONE);
-
-                    SharedPreferences.Editor edt = pref.edit();
-                    edt.putString("shareLink", response);
-                    edt.commit();
-
-                    shareApp(response);
-                }
-
-                @Override
-                public void Failure(String error) {
-
-                    Toast.makeText(HomeActivity.this, "Network connection needed !!", Toast.LENGTH_SHORT).show();
-
-                    avilayoutProgress.smoothToHide();
-                    layoutProgress.setVisibility(View.GONE);
-                }
-            });
-
-        } else {
-            shareApp(pref.getString("shareLink", "false"));
-        }
-    }
-
-    private void shareApp(String response) {
+    private void shareApp() {
 
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_SUBJECT, "Quizrr");
 
-        String message = "Let me recommend you this application \n\n";
-        message += response;
+        String message = "P.S.C.  പഠനം ഈസിയാക്കു ......\n" +
+                "( FREE Android Application )\n";
+        message += "https://play.google.com/store/apps/details?id="+getApplication().getPackageName();
 
         intent.putExtra(Intent.EXTRA_TEXT, message);
         startActivity(Intent.createChooser(intent, "Choose one"));
@@ -287,20 +252,49 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onBackPressed() {
 
-        if (doubleBackToExitPressedOnce) {
-            super.onBackPressed();
-        }
+//        if (doubleBackToExitPressedOnce) {
+//            super.onBackPressed();
+//        }
+//
+//        this.doubleBackToExitPressedOnce = true;
+//        Toast.makeText(this, "Press Back again to exit", Toast.LENGTH_SHORT).show();
+//
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//                doubleBackToExitPressedOnce = false;
+//            }
+//        }, 2000);
 
-        this.doubleBackToExitPressedOnce = true;
-        Toast.makeText(this, "Press Back again to exit", Toast.LENGTH_SHORT).show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        new Handler().postDelayed(new Runnable() {
+        final View view = LayoutInflater.from(this).inflate(R.layout.exit_layout_screen, null);
+
+        builder.setView(view);
+        LinearLayout imgWrong = (LinearLayout) view.findViewById(R.id.imgWrong);
+        LinearLayout imgRight = (LinearLayout) view.findViewById(R.id.imgRight);
+
+        final Dialog dialog = builder.create();
+        dialog.show();
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+        imgRight.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void run() {
-
-                doubleBackToExitPressedOnce = false;
+            public void onClick(View v) {
+                dialog.dismiss();
+                moveTaskToBack(true);
+                android.os.Process.killProcess(android.os.Process.myPid());
+                System.exit(1);
             }
-        }, 2000);
+        });
+
+        imgWrong.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
 
     }
 

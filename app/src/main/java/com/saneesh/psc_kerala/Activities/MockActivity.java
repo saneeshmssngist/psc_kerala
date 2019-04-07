@@ -2,6 +2,7 @@ package com.saneesh.psc_kerala.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
@@ -69,13 +70,13 @@ public class MockActivity extends AppCompatActivity implements View.OnClickListe
         initControl();
 
         setData();
-     //   setUpAdmob();
+        //   setUpAdmob();
     }
 
     private void setUpAdmob() {
 
         //admob sync..
-        MobileAds.initialize(this,getResources().getString(R.string.APPID));
+        MobileAds.initialize(this, getResources().getString(R.string.APPID));
 
         adMobView = (AdView) findViewById(R.id.adMobView);
         adMobView.loadAd(new AdRequest.Builder().build());
@@ -84,8 +85,7 @@ public class MockActivity extends AppCompatActivity implements View.OnClickListe
         interstitialAd.setAdUnitId(getResources().getString(R.string.INTERTITIAID));
         interstitialAd.loadAd(new AdRequest.Builder().build());
 
-        interstitialAd.setAdListener(new AdListener()
-        {
+        interstitialAd.setAdListener(new AdListener() {
             @Override
             public void onAdClosed() {
                 super.onAdClosed();
@@ -133,7 +133,7 @@ public class MockActivity extends AppCompatActivity implements View.OnClickListe
 
     public void initControl() {
 
-        txtTotalQns.setText(questionsCount);
+        txtTotalQns.setText(questionTot);
 
         txtViewOption1.setOnClickListener(this);
         txtViewOption2.setOnClickListener(this);
@@ -147,7 +147,7 @@ public class MockActivity extends AppCompatActivity implements View.OnClickListe
 
     public void setData() {
 
-       // txtViewCoins.setText(Session.getSharedData("myCoins"));
+        // txtViewCoins.setText(Session.getSharedData("myCoins"));
 
         if (quizItemsCount != quizItems.length) {
             itemNo = quizItems[quizItemsCount];
@@ -166,7 +166,7 @@ public class MockActivity extends AppCompatActivity implements View.OnClickListe
         questionData = HomeActivity.INSTANCE.myDao().getQuizQuestions(itemNo);
 
         //check duplicate data
-        if(!checkDupdatas(questionData.getId())) {
+        if (!checkDupdatas(questionData.getId())) {
             //increase question number .
             questionNumber++;
 
@@ -238,18 +238,15 @@ public class MockActivity extends AppCompatActivity implements View.OnClickListe
             txtViewOption3.setText(questionData.getOption3());
             txtViewOption4.setText(questionData.getOption4());
 
-        }
-        else
-        {
-           setQuestionDatas(itemNo);
+        } else {
+            setQuestionDatas(itemNo);
         }
     }
 
     private boolean checkDupdatas(int id) {
 
-        for(int i = 0; i < dupIds.size() ; i++)
-        {
-            if(dupIds.get(i).equals(String.valueOf(id)))
+        for (int i = 0; i < dupIds.size(); i++) {
+            if (dupIds.get(i).equals(String.valueOf(id)))
                 return true;
         }
         return false;
@@ -274,15 +271,19 @@ public class MockActivity extends AppCompatActivity implements View.OnClickListe
 
         switch (id) {
             case R.id.txtViewOption1:
+                layoutOption1.setBackgroundResource(R.drawable.game_quiz_click);
                 checkAnswer(1);
                 break;
             case R.id.txtViewOption2:
+                layoutOption2.setBackgroundResource(R.drawable.game_quiz_click);
                 checkAnswer(2);
                 break;
             case R.id.txtViewOption3:
+                layoutOption3.setBackgroundResource(R.drawable.game_quiz_click);
                 checkAnswer(3);
                 break;
             case R.id.txtViewOption4:
+                layoutOption4.setBackgroundResource(R.drawable.game_quiz_click);
                 checkAnswer(4);
                 break;
             case R.id.layoutButton:
@@ -292,50 +293,59 @@ public class MockActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    private void checkAnswer(int answerNum) {
+    private void checkAnswer(final int answerNum) {
 
-        setLOttie();
-        //user entry datas..
-        answersArray.add(String.valueOf(answerNum));
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
 
-        //for display wrong answer .
-        if (!questionData.getAnswer().equals(String.valueOf(answerNum))) {
-            switch (answerNum) {
-                case 1:
-                    layoutOption1.setBackgroundResource(R.drawable.game_quiz_wrong);
-                    break;
-                case 2:
-                    layoutOption2.setBackgroundResource(R.drawable.game_quiz_wrong);
-                    break;
-                case 3:
-                    layoutOption3.setBackgroundResource(R.drawable.game_quiz_wrong);
-                    break;
-                case 4:
-                    layoutOption4.setBackgroundResource(R.drawable.game_quiz_wrong);
-                    break;
+
+                setLOttie();
+                //user entry datas..
+                answersArray.add(String.valueOf(answerNum));
+
+                //for display wrong answer .
+                if (!questionData.getAnswer().equals(String.valueOf(answerNum))) {
+                    switch (answerNum) {
+                        case 1:
+                            layoutOption1.setBackgroundResource(R.drawable.game_quiz_wrong);
+                            break;
+                        case 2:
+                            layoutOption2.setBackgroundResource(R.drawable.game_quiz_wrong);
+                            break;
+                        case 3:
+                            layoutOption3.setBackgroundResource(R.drawable.game_quiz_wrong);
+                            break;
+                        case 4:
+                            layoutOption4.setBackgroundResource(R.drawable.game_quiz_wrong);
+                            break;
+                    }
+
+                }
+
+                //for display correct answer.
+                switch (Integer.valueOf(questionData.getAnswer())) {
+                    case 1:
+                        layoutOption1.setBackgroundResource(R.drawable.game_quiz_correct);
+                        break;
+                    case 2:
+                        layoutOption2.setBackgroundResource(R.drawable.game_quiz_correct);
+                        break;
+                    case 3:
+                        layoutOption3.setBackgroundResource(R.drawable.game_quiz_correct);
+                        break;
+                    case 4:
+                        layoutOption4.setBackgroundResource(R.drawable.game_quiz_correct);
+                        break;
+                }
+
+                layoutButton.setVisibility(View.VISIBLE);
+
             }
+        }, 1500);
 
-        }
-
-        //for display correct answer.
-        switch (Integer.valueOf(questionData.getAnswer())) {
-            case 1:
-                layoutOption1.setBackgroundResource(R.drawable.game_quiz_correct);
-                break;
-            case 2:
-                layoutOption2.setBackgroundResource(R.drawable.game_quiz_correct);
-                break;
-            case 3:
-                layoutOption3.setBackgroundResource(R.drawable.game_quiz_correct);
-                break;
-            case 4:
-                layoutOption4.setBackgroundResource(R.drawable.game_quiz_correct);
-                break;
-        }
-
-
-        layoutButton.setVisibility(View.VISIBLE);
         diableButtons();
+
 
     }
 
@@ -364,21 +374,21 @@ public class MockActivity extends AppCompatActivity implements View.OnClickListe
 
     private void setupReview() {
 
-        if(interstitialAd.isLoaded())
-        {
-            interstitialAd.show();
+//        if(interstitialAd.isLoaded())
+//        {
+//            interstitialAd.show();
+//
+//        }
+//        else {
 
-        }
-        else {
-
-            Intent intent = new Intent(this, MockReviewActivity.class);
-            intent.putExtra("mockDatas", (Serializable) questionDatasArray);
-            intent.putExtra("answerDatas", answersArray);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-        }
+        Intent intent = new Intent(this, MockReviewActivity.class);
+        intent.putExtra("mockDatas", (Serializable) questionDatasArray);
+        intent.putExtra("answerDatas", answersArray);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+//        }
 
     }
 

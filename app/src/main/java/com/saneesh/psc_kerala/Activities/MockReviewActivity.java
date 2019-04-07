@@ -24,7 +24,7 @@ import java.util.ArrayList;
 
 import static com.saneesh.psc_kerala.Base.setStatusBarGradiant;
 
-public class MockReviewActivity extends AppCompatActivity {
+public class MockReviewActivity extends BaseActivity {
 
     private ArrayList<QuizTable> questionDatasArray;
     private ArrayList<String> answerArray;
@@ -46,19 +46,10 @@ public class MockReviewActivity extends AppCompatActivity {
         setStatusBarGradiant(this);
 
         getViews();
-        setActionBar();
+        setToolBar("Feed back");
         setDatas();
 
       //  setUpAdmob();
-    }
-
-    public void setActionBar() {
-
-        toolBar = findViewById(R.id.toolBar);
-        setSupportActionBar(toolBar);
-
-        getSupportActionBar().setTitle("Feed back");
-
     }
 
     private void setUpAdmob() {

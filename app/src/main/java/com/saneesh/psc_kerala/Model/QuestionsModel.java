@@ -31,6 +31,8 @@ public class QuestionsModel implements Serializable
 
     String status;
 
+    @SerializedName("quiz_datas")
+    ArrayList<QuestionsModel> dailyQuizDatas;
 
     @SerializedName("question_paper1")
     ArrayList<QuestionsModel> questionsModels1;
@@ -56,6 +58,13 @@ public class QuestionsModel implements Serializable
     @SerializedName("question_papers")
     ArrayList<QuestionsModel> namesArray;
 
+    public ArrayList<QuestionsModel> getDailyQuizDatas() {
+        return dailyQuizDatas;
+    }
+
+    public void setDailyQuizDatas(ArrayList<QuestionsModel> dailyQuizDatas) {
+        this.dailyQuizDatas = dailyQuizDatas;
+    }
 
     public ArrayList<QuestionsModel> getQuestionsModels1() {
         return questionsModels1;

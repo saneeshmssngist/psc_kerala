@@ -4,10 +4,16 @@
     android:shape="rectangle"
     >
 
+    <!--<gradient-->
+        <!--android:startColor="#ed328a"-->
+        <!--android:centerColor="#a43a9c"-->
+        <!--android:endColor="#a43a9c"-->
+        <!--/>-->
+
     <gradient
-        android:startColor="#ed328a"
-        android:centerColor="#a43a9c"
-        android:endColor="#a43a9c"
+        android:startColor="#ee5350"
+        android:centerColor="#f26562"
+        android:endColor="#ee8888"
         />
 
 </shape>

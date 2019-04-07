@@ -26,10 +26,10 @@
         <Button
             android:id="@+id/btnNextLevel"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_above="@+id/adMobView"
             android:layout_margin="5dp"
-            android:background="@color/blue_light"
+            android:background="@color/master_color"
             android:gravity="center"
             android:text="Restart Test"
             android:textColor="@color/black" />

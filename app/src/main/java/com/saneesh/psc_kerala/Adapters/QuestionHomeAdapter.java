@@ -98,7 +98,7 @@ public class QuestionHomeAdapter extends RecyclerView.Adapter<QuestionHomeAdapte
                     }
                     else
                     {
-                        Toast.makeText(context,"Comming soon",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context,"Coming soon",Toast.LENGTH_SHORT).show();
                     }
 
                 }
