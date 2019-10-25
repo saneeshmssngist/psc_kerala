@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.saneesh.psc_kerala">
-
-    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -11,7 +10,16 @@
         android:largeHeap="true"
         android:roundIcon="@mipmap/quizrr_logo"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        >
+
+        <activity android:name=".Activities.ChallengeGameMainActivity"
+            android:windowSoftInputMode="stateVisible"
+            >
+
+        </activity>
+
+        <activity android:name=".Activities.PlayerSelectionActivity" />
         <activity android:name=".Activities.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,11 +27,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="475ee7d7c56492583485a47681c94fac5ff35c14" />
-
         <activity
             android:name=".Activities.GeneralHomeActivity"
             android:screenOrientation="portrait" />
@@ -66,18 +69,24 @@
         <activity
             android:name=".Activities.NetworkStateActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".Activities.BaseActivity" />
+        <activity android:name=".Activities.InfinityQuizActivity" />
+        <activity android:name=".Activities.ScoreBoardActivity" />
+        <activity android:name=".Activities.DailyQuizHomeActivity" />
+        <activity android:name=".Activities.DailyQuizActivity" />
+        <activity android:name=".Activities.ChallengeScreenActivity" />
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="475ee7d7c56492583485a47681c94fac5ff35c14" />
 
         <service android:name=".FCMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
-        <activity android:name=".Activities.BaseActivity" />
-        <activity android:name=".Activities.InfinityQuizActivity" />
-        <activity android:name=".Activities.ScoreBoardActivity" />
-        <activity android:name=".Activities.DailyQuizHomeActivity" />
-        <activity android:name=".Activities.DailyQuizActivity"></activity>
     </application>
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

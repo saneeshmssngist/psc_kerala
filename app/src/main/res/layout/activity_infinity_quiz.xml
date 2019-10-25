@@ -123,7 +123,7 @@
                 android:textStyle="bold"
                 android:visibility="gone"/>
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="50dp"
@@ -153,12 +153,14 @@
 
             <LinearLayout
                     android:id="@+id/optionsLayout"
-                    android:layout_width="360dp"
+                    android:layout_width="match_parent"
                     android:layout_height="200dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:orientation="vertical"
                     android:layout_alignParentBottom="true"
                     android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     android:layout_marginTop="60dp" app:layout_constraintTop_toBottomOf="@+id/txtViewQuestion"
@@ -309,7 +311,7 @@
 
             </LinearLayout>
 
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
 

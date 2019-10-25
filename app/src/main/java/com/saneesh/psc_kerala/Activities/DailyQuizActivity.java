@@ -3,41 +3,45 @@ package com.saneesh.psc_kerala.Activities;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
-import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
-import com.saneesh.psc_kerala.DataManager;
-import com.saneesh.psc_kerala.Interfaces.RetrofitCallBack;
-import com.saneesh.psc_kerala.Model.QuestionsModel;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.saneesh.psc_kerala.Model.DailyQuizData;
 import com.saneesh.psc_kerala.Model.QuizTable;
-import com.saneesh.psc_kerala.NetworkConnection;
 import com.saneesh.psc_kerala.R;
 import com.saneesh.psc_kerala.Session;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import androidx.cardview.widget.CardView;
 
 public class DailyQuizActivity extends BaseActivity implements View.OnClickListener {
 
 
     private TextView txtViewQuestion, txtViewOption1, txtViewOption2, txtViewOption3, txtViewOption4;
     private TextView txtViewQuestionNumber, txtTotalQns;
-    private ArrayList<QuestionsModel> questionsdatsArray;
+    private List<QuizTable> questionsdatsArray;
     private LinearLayout layoutButton;
-    private QuestionsModel questionData;
+    private QuizTable questionData;
     private int questionNumber = -1;
-    private int countCorrectAnswer = 0,countWrongAnswer = 0;
-
+    private int countCorrectAnswer = 0, countWrongAnswer = 0;
+    private InterstitialAd interstitialAd;
+    private ArrayList<DailyQuizData> dailyQuizData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,18 +50,32 @@ public class DailyQuizActivity extends BaseActivity implements View.OnClickListe
 
         initViews();
         initControls();
+        setUpAdmob();
+        setUpAdmobs();
 
+    }
+
+    private void setUpAdmobs() {
+
+        //admob sync..
+        MobileAds.initialize(this, getResources().getString(R.string.APPID));
+
+//        adMobView = (AdView) findViewById(R.id.adMobView);
+//        adMobView.loadAd(new AdRequest.Builder().build());
+
+        interstitialAd = new InterstitialAd(this);
+        interstitialAd.setAdUnitId(getResources().getString(R.string.INTERTITIAID));
+        interstitialAd.loadAd(new AdRequest.Builder().build());
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        setDatas(getIntent().getStringExtra("quizUrl"));
+        setDatas();
 
     }
 
-    private void initViews()
-    {
+    private void initViews() {
         txtViewQuestion = (TextView) findViewById(R.id.txtViewQuestion);
         txtViewQuestion = (TextView) findViewById(R.id.txtViewQuestion);
         txtViewOption1 = (TextView) findViewById(R.id.txtViewOption1);
@@ -70,6 +88,7 @@ public class DailyQuizActivity extends BaseActivity implements View.OnClickListe
 
         layoutButton = (LinearLayout) findViewById(R.id.layoutButton);
 
+        diableButtons();
 
     }
 
@@ -84,37 +103,18 @@ public class DailyQuizActivity extends BaseActivity implements View.OnClickListe
 
     }
 
-    private void setDatas(String quizUrl) {
+    private void setDatas() {
 
-        NetworkConnection networkConnection = new NetworkConnection();
-        if (!networkConnection.isConnected(DailyQuizActivity.this)) {
-            startActivity(new Intent(DailyQuizActivity.this, NetworkStateActivity.class));
-
-        } else {
-            DataManager.getDatamanager().fetchDailyQuizDatas(quizUrl, new RetrofitCallBack<ArrayList<QuestionsModel>>() {
-                @Override
-                public void Success(ArrayList<QuestionsModel> questionsModelsArray) {
-
-                    txtTotalQns.setText(String.valueOf(questionsModelsArray.size()));
-                    questionsdatsArray = questionsModelsArray;
-                    setQuizDatas();
-                }
-
-                @Override
-                public void Failure(String error) {
-
-                }
-            });
-
-        }
+        questionsdatsArray = HomeActivity.INSTANCE.myDao().getRandomData();
+        setQuizDatas();
     }
 
     private void setQuizDatas() {
 
         questionNumber++;
-        if(questionNumber < 10) {
+        if (questionNumber < 10) {
 
-            txtViewQuestionNumber.setText("Q. "+String.valueOf(questionNumber+1)+" /"+questionsdatsArray.size());
+            txtViewQuestionNumber.setText("Q. " + String.valueOf(questionNumber + 1) + " /" + questionsdatsArray.size());
             questionData = questionsdatsArray.get(questionNumber);
 
             //clearing all datas .
@@ -169,9 +169,7 @@ public class DailyQuizActivity extends BaseActivity implements View.OnClickListe
             txtViewOption3.setText(questionData.getOption3());
             txtViewOption4.setText(questionData.getOption4());
 
-        }
-        else
-        {
+        } else {
             showProgressCongrats();
         }
 
@@ -234,6 +232,8 @@ public class DailyQuizActivity extends BaseActivity implements View.OnClickListe
 
     private void checkAnswer(final int answerNum) {
 
+        finish();
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -274,7 +274,7 @@ public class DailyQuizActivity extends BaseActivity implements View.OnClickListe
                         break;
                 }
 
-                if(questionData.getAnswer().equals(String.valueOf(answerNum)))
+                if (questionData.getAnswer().equals(String.valueOf(answerNum)))
                     countCorrectAnswer += 1;
                 else
                     countWrongAnswer += 1;
@@ -290,6 +290,8 @@ public class DailyQuizActivity extends BaseActivity implements View.OnClickListe
     }
 
     public void showProgressCongrats() {
+
+        addScoreToData();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -319,29 +321,46 @@ public class DailyQuizActivity extends BaseActivity implements View.OnClickListe
 
     }
 
-    private void setInterstitialAd() {
+    private void addScoreToData() {
 
-//        interstitialAd.setAdListener(new AdListener() {
-//            @Override
-//            public void onAdClosed() {
-//                super.onAdClosed();
-//                setData();
-//
-//                interstitialAd.loadAd(new AdRequest.Builder().build());
-//            }
-//        });
-//
-//        if (interstitialAd.isLoaded()) {
-//            interstitialAd.show();
-//        } else {
-//
-            finish();
-//        }
+        dailyQuizData = new Gson().fromJson(Session.getDailyQuizData(), new TypeToken<ArrayList<DailyQuizData>>() {
+        }.getType());
+
+        DailyQuizData quizData = new DailyQuizData();
+        quizData.setScore(String.valueOf(countCorrectAnswer));
+        quizData.setWrong(String.valueOf(countWrongAnswer));
+        quizData.setDate(new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
+        quizData.setTime(new SimpleDateFormat("hh:mm a").format(new Date()));
+
+        dailyQuizData.add(0, quizData);
+
+        Session.setDailyQuizData(new Gson().toJson(dailyQuizData));
+
 
     }
 
+    private void setInterstitialAd() {
 
 
+        interstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                super.onAdClosed();
+
+                startActivity(new Intent(DailyQuizActivity.this, DailyQuizHomeActivity.class));
+                finish();
+
+                interstitialAd.loadAd(new AdRequest.Builder().build());
+            }
+        });
+
+        if (interstitialAd.isLoaded()) {
+            interstitialAd.show();
+        } else {
+
+        }
+
+    }
 
 
 }

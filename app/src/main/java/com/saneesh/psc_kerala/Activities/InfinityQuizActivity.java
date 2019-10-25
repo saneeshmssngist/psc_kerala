@@ -14,7 +14,7 @@ import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.widget.CardView;
+import androidx.cardview.widget.CardView;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -116,12 +116,12 @@ public class InfinityQuizActivity extends BaseActivity implements View.OnClickLi
         }, 3000);
 
 //        setVolume();
-      //  setUpAdmob();
+        setUpAdmobs();
     }
 
     private void setInitialDatas() {
 
-        final Animation zoom = AnimationUtils.loadAnimation(InfinityQuizActivity.this, R.anim.zoom_in);
+            final Animation zoom = AnimationUtils.loadAnimation(InfinityQuizActivity.this, R.anim.zoom_in);
         final Animation slideDown = AnimationUtils.loadAnimation(InfinityQuizActivity.this, R.anim.slide_down);
         final Animation slideUp = AnimationUtils.loadAnimation(InfinityQuizActivity.this, R.anim.slide_up);
         layoutOption1.startAnimation(zoom);
@@ -150,7 +150,7 @@ public class InfinityQuizActivity extends BaseActivity implements View.OnClickLi
 
     }
 
-    private void setUpAdmob() {
+    private void setUpAdmobs() {
 
         //admob sync..
         MobileAds.initialize(this, getResources().getString(R.string.APPID));
@@ -971,10 +971,11 @@ public class InfinityQuizActivity extends BaseActivity implements View.OnClickLi
 
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_SUBJECT, "Infinity Quiz");
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Quizrr");
 
-        String message = "Let me recommend you this application for psc preparation"
-                + "https://play.google.com/store/apps/details?id=com.astalavista.saneesh.quizrrgame";
+        String message = "P.S.C.  പഠനം ഈസിയാക്കു ......\n" +
+                "( FREE Android Application )\n";
+        message += "https://play.google.com/store/apps/details?id="+getApplication().getPackageName();
 
         intent.putExtra(Intent.EXTRA_TEXT, message);
         startActivity(Intent.createChooser(intent, "Choose one"));

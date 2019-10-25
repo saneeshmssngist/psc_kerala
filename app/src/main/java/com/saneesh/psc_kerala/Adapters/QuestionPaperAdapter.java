@@ -2,7 +2,7 @@ package com.saneesh.psc_kerala.Adapters;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,14 +10,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.saneesh.psc_kerala.AppConstants;
-import com.saneesh.psc_kerala.Model.GeneralModel;
-import com.saneesh.psc_kerala.Model.QuestionTable1;
 import com.saneesh.psc_kerala.Model.QuestionsModel;
 import com.saneesh.psc_kerala.R;
-import com.saneesh.psc_kerala.Session;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

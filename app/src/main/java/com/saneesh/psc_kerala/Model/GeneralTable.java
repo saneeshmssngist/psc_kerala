@@ -1,13 +1,10 @@
 package com.saneesh.psc_kerala.Model;
 
-import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.PrimaryKey;
-import android.support.annotation.NonNull;
-
-import com.google.gson.annotations.SerializedName;
-
-import java.util.ArrayList;
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+import androidx.annotation.NonNull;
 
 /**
  * Created by saNeesH on 2018-07-25.

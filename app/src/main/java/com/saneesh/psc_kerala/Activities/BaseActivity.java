@@ -1,13 +1,16 @@
 package com.saneesh.psc_kerala.Activities;
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.saneesh.psc_kerala.R;
 import com.wang.avi.AVLoadingIndicatorView;
 
@@ -19,6 +22,7 @@ public class BaseActivity extends AppCompatActivity {
     private Toolbar toolBar;
     private RelativeLayout layoutBack;
     private TextView txtHead;
+    private AdView adMobView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +37,16 @@ public class BaseActivity extends AppCompatActivity {
 
         layoutProgress.setVisibility(View.VISIBLE);
         avilayoutProgress.show();
+    }
+
+    public void setUpAdmob() {
+
+        //admob sync..
+        MobileAds.initialize(this, getResources().getString(R.string.APPID));
+
+        adMobView = (AdView) findViewById(R.id.adMobView);
+        adMobView.loadAd(new AdRequest.Builder().build());
+
     }
 
     public void hideProgress()

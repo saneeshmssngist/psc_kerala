@@ -3,13 +3,11 @@ package com.saneesh.psc_kerala.Activities;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.widget.Toast;
 
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
 import com.saneesh.psc_kerala.Adapters.TopicHomeAdapter;
 import com.saneesh.psc_kerala.Base;
 import com.saneesh.psc_kerala.DataManager;
@@ -36,24 +34,14 @@ public class TopicHomeActivity extends BaseActivity {
         Base.setStatusBarGradiant(this);
 
         getViews();
+        setUpAdmob();
 
-        //  setUpAdmob();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         setData();
-    }
-
-    private void setUpAdmob() {
-
-        //admob sync..
-        MobileAds.initialize(this, getResources().getString(R.string.APPID));
-
-        adMobView = (AdView) findViewById(R.id.adMobView);
-        adMobView.loadAd(new AdRequest.Builder().build());
-
     }
 
     private void getViews() {

@@ -3,10 +3,10 @@ package com.saneesh.psc_kerala.Activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.BottomSheetBehavior;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.AnimationUtils;
@@ -106,6 +106,8 @@ public class GeneralActivity extends BaseActivity implements GeneralQuizInterfac
         recyclerViewPager = (RecyclerView) findViewById(R.id.recyclerViewPager);
         recyclerViewPager.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
 
+        imageViewLeft.setEnabled(false);
+        imageViewRight.setEnabled(false);
     }
 
     public void initControl() {
@@ -208,6 +210,9 @@ public class GeneralActivity extends BaseActivity implements GeneralQuizInterfac
             DataManager.getDatamanager().getGeneralData(dataUrl, new RetrofitCallBack<ArrayList<GeneralModel>>() {
                 @Override
                 public void Success(ArrayList<GeneralModel> generalDatasArray) {
+
+                    imageViewLeft.setEnabled(true);
+                    imageViewRight.setEnabled(true);
 
                     generalQuestionDatasArray = generalDatasArray;
                     setQuestionDatas();

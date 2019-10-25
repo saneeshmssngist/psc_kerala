@@ -4,13 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
+import androidx.cardview.widget.CardView;
 import android.view.View;
 import android.widget.Toast;
 
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
 import com.saneesh.psc_kerala.DataManager;
 import com.saneesh.psc_kerala.Interfaces.RetrofitCallBack;
 import com.saneesh.psc_kerala.Model.GeneralHome;
@@ -44,8 +42,8 @@ public class GeneralHomeActivity extends BaseActivity implements View.OnClickLis
         getViews();
         setActionBar();
         initControl();
+        setUpAdmob();
 
-        //  setUpAdmob();
     }
 
     @Override
@@ -53,17 +51,6 @@ public class GeneralHomeActivity extends BaseActivity implements View.OnClickLis
         super.onStart();
         setDatas();
     }
-
-    private void setUpAdmob() {
-
-        //admob sync..
-        MobileAds.initialize(this, getResources().getString(R.string.APPID));
-
-        adMobView = (AdView) findViewById(R.id.adMobView);
-        adMobView.loadAd(new AdRequest.Builder().addTestDevice("C0256988724EBA3D6A98B53747EE5900").build());
-
-    }
-
 
     public void setDatas() {
 
@@ -89,6 +76,7 @@ public class GeneralHomeActivity extends BaseActivity implements View.OnClickLis
                     generalDatasHome = generalDatas;
 
                 }
+
                 @Override
                 public void Failure(String error) {
 

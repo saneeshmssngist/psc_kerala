@@ -4,12 +4,12 @@
     <string name="FCM_PRE">com.saneesh.psc_kerala.fcm_pref</string>
     <string name="FCM_TOKEN">com.saneesh.psc_kerala.fcm_token</string>
 
-    <string name="APPID"></string>
-    <string name="BANNERID"></string>
-    <string name="INTERTITIAID"></string>
-    <!--<string name="APPID">ca-app-pub-5847774043131331~5175038311</string>-->
-    <!--<string name="BANNERID">ca-app-pub-5847774043131331/2904098193</string>-->
-    <!--<string name="INTERTITIAID">ca-app-pub-5847774043131331/2169185730</string>-->
+    <string name="APPID">asa</string>
+    <string name="BANNERID">wwwwwd</string>
+    <string name="INTERTITIAID">dsa</string>
+    <!--    <string name="APPID">ca-app-pub-5847774043131331~5175038311</string>-->
+    <!--    <string name="BANNERID">ca-app-pub-5847774043131331/2904098193</string>-->
+    <!--    <string name="INTERTITIAID">ca-app-pub-5847774043131331/2169185730</string>-->
 
     <string name="kerala">കേരളം</string>
     <string name="india">ഇന്ത്യ </string>
@@ -25,6 +25,14 @@
     <string name="science">ശാസ്ത്രം</string>
 
 
+    <string name="title_activity_base">BaseActivity</string>
+
+    <string name="title_activity_pre_home">PreHomeActivity</string>
+
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="title_activity_sample">SAmpleActivity</string>
+    <string name="you">you</string>
     <string-array name="categories">
 
 
@@ -41,12 +49,41 @@
 
     </string-array>
 
-    <string name="title_activity_base">BaseActivity</string>
 
-    <string name="title_activity_pre_home">PreHomeActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
-    <string name="title_activity_sample">SAmpleActivity</string>
+    <string-array name="opponent_names_male">
+        <item>sudheesh</item>
+        <item>Jeevan</item>
+        <item>Adarsh</item>
+        <item>Nijil</item>
+        <item>Yadhu</item>
+        <item>Achu</item>
+        <item>Jeevan</item>
+        <item>Chandhu</item>
+        <item>Amal</item>
+        <item>Saleesh</item>
+        <item>Nishad</item>
+        <item>Bibeesh</item>
+        <item>Jibin</item>
+        <item>Vishnu</item>
+        <item>Jishnu</item>
+        <item>Jithin</item>
+    </string-array>
+
+    <string-array name="opponent_names_female">
+        <item>Drisya</item>
+        <item>Nalini</item>
+        <item>Nimisha</item>
+        <item>Archana</item>
+        <item>Nijisha</item>
+        <item>Lavanya</item>
+        <item>Jimcy</item>
+        <item>Krishna</item>
+        <item>Devutty</item>
+        <item>Achu</item>
+        <item>Devu</item>
+        <item>Anjali</item>
+        <item>Sangeetha</item>
+    </string-array>
 
 
 </resources>

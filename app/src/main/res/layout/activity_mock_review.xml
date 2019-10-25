@@ -14,7 +14,7 @@
             android:layout_height="45dp"
             />
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewReview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -29,7 +29,7 @@
             android:layout_height="40dp"
             android:layout_above="@+id/adMobView"
             android:layout_margin="5dp"
-            android:background="@color/master_color"
+            android:background="@color/master_color_light"
             android:gravity="center"
             android:text="Restart Test"
             android:textColor="@color/black" />

@@ -3,7 +3,7 @@ package com.saneesh.psc_kerala.Activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -70,7 +70,8 @@ public class MockActivity extends AppCompatActivity implements View.OnClickListe
         initControl();
 
         setData();
-        //   setUpAdmob();
+        setUpAdmob();
+
     }
 
     private void setUpAdmob() {

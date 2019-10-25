@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".Activities.ChallengeGameMainActivity">
+
+    <include
+        layout="@layout/tool_bar"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        />
+
+    <LinearLayout
+        android:id="@+id/layoutSex"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/male"
+                app:civ_border_color="@color/black_trasparent"
+                app:civ_border_width="1dp"
+                android:layout_gravity="center_horizontal"
+                />
+
+            <RadioButton
+                android:id="@+id/rbMale"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="@dimen/margin_width_10"
+                android:buttonTint="@color/colorPrimaryDark"
+                android:layout_gravity="center_horizontal"
+                />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="@dimen/margin_width_50"
+            >
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/female"
+                app:civ_border_color="@color/black_trasparent"
+                app:civ_border_width="1dp"
+                android:layout_gravity="center_horizontal"
+                />
+
+            <RadioButton
+                android:id="@+id/rbFeMale"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="@dimen/margin_width_10"
+                android:shadowColor="@color/black"
+                android:buttonTint="@color/colorPrimaryDark"
+                android:layout_gravity="center_horizontal"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/edtName"
+        android:layout_width="150dp"
+        android:layout_height="@dimen/margin_width_40"
+        android:layout_below="@+id/layoutSex"
+        android:layout_marginTop="@dimen/margin_width_20"
+        android:text=""
+        android:hint="Enter name"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/black"
+        android:textColorHint="#9E9D9D"
+        android:textSize="@dimen/text_size_17"
+        android:background="@drawable/challenge_edt_bg"
+        android:padding="@dimen/margin_width_5"
+        android:gravity="center"
+        android:lines="1"
+        android:inputType="text"
+        android:imeOptions="actionGo"
+        android:ellipsize="end"
+        android:focusable="true"
+        />
+
+    <TextView
+        android:id="@+id/txtNext"
+        style="@style/AppTheme.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/master_green1"
+        android:text="Next"
+        android:textColor="@color/white"
+        android:theme="@style/AppTheme.Button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_alignParentBottom="true"
+        />
+
+
+</RelativeLayout>

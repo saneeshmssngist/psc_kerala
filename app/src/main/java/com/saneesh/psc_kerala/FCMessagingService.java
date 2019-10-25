@@ -1,25 +1,19 @@
 package com.saneesh.psc_kerala;
 
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.os.IBinder;
-import android.support.v4.app.NotificationCompat;
-import android.util.Log;
+import android.os.Build;
+import androidx.core.app.NotificationCompat;
 import android.widget.RemoteViews;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageRequest;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import com.saneesh.psc_kerala.Activities.DailyQuizHomeActivity;
-import com.saneesh.psc_kerala.Activities.QuestionPaperHomeActivity;
 import com.saneesh.psc_kerala.Activities.SplashScreen;
 
 import java.text.SimpleDateFormat;
@@ -30,6 +24,7 @@ public class FCMessagingService extends FirebaseMessagingService {
 
 
     NotificationCompat.Builder notification;
+    private NotificationManager notifManager;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -40,40 +35,51 @@ public class FCMessagingService extends FirebaseMessagingService {
 
 //       String image_url = remoteMessage.getNotification().getTitle();
 
-        Intent intent1 = new Intent(this,SplashScreen.class);
-        intent1.putExtra("notificationType",type);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this,0,intent1,PendingIntent.FLAG_ONE_SHOT);
+        Intent intent1 = new Intent(this, SplashScreen.class);
+        intent1.putExtra("notificationType", type);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent1, PendingIntent.FLAG_ONE_SHOT);
 
-        notification = new NotificationCompat.Builder(this,"123");
+        if (notifManager == null) {
+            notifManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel mChannel = notifManager.getNotificationChannel("123");
+            if (mChannel == null) {
+                mChannel = new NotificationChannel("123", title, importance);
+                mChannel.enableVibration(true);
+                mChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+                notifManager.createNotificationChannel(mChannel);
+            }
+        }
+            notification = new NotificationCompat.Builder(this, "123");
 
 
 //Building notifcation
-        notification.setSmallIcon(R.mipmap.quizrr_logo);
-        Bitmap bm = BitmapFactory.decodeResource(this.getResources(), R.mipmap.quizrr_logo);
-        notification.setLargeIcon(bm);
-        notification.setWhen(System.currentTimeMillis());
+            notification.setSmallIcon(R.mipmap.quizrr_logo);
+            Bitmap bm = BitmapFactory.decodeResource(this.getResources(), R.mipmap.quizrr_logo);
+            notification.setLargeIcon(bm);
+            notification.setWhen(System.currentTimeMillis());
 //        notification.setContentTitle(title);
 //        notification.setContentText(message);
 //        notification.setTicker("Notifiication from Quizrr");
-        notification.setAutoCancel(true);
+            notification.setAutoCancel(true);
 
-        String time = new SimpleDateFormat("hh:mm a",Locale.getDefault()).format(Calendar.getInstance().getTime());
+            String time = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(Calendar.getInstance().getTime());
 
-        RemoteViews contentView = new RemoteViews(getPackageName(), R.layout.custom_notification);
-        contentView.setTextViewText(R.id.txtViewContent,title);
-        contentView.setTextViewText(R.id.txtViewTime,time);
-        notification.setCustomContentView(contentView);
-
-
+            RemoteViews contentView = new RemoteViews(getPackageName(), R.layout.custom_notification);
+            contentView.setTextViewText(R.id.txtViewContent, title);
+            contentView.setTextViewText(R.id.txtViewTime, time);
+            notification.setCustomContentView(contentView);
 
 //        notification.setStyle(new NotificationCompat.BigTextStyle()
 //                .bigText(message));
 
-        notification.setLights(Color.BLUE, 500, 500);
-        long[] pattern = {500,500,500,500,500,500,500,500,500};
-        notification.setVibrate(pattern);
+            notification.setLights(Color.BLUE, 500, 500);
+            long[] pattern = {500, 500, 500, 500, 500, 500, 500, 500, 500};
+            notification.setVibrate(pattern);
 
-        notification.setContentIntent(pendingIntent);
+            notification.setContentIntent(pendingIntent);
 
 ////For fetching the image data from internet by using url
 //        ImageRequest imageRequest = new ImageRequest(image_url, new Response.Listener<Bitmap>() {
@@ -95,9 +101,8 @@ public class FCMessagingService extends FirebaseMessagingService {
 //
 //        Singleton.getInstance(this).addToRequestque(imageRequest);
 
-        NotificationManager nmr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        nmr.notify(0,notification.build());
+            notifManager.notify(0,notification.build());
+
+        }
 
     }
-
-}

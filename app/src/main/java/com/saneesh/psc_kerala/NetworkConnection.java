@@ -4,12 +4,10 @@ import android.content.Context;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.support.design.widget.Snackbar;
+import com.google.android.material.snackbar.Snackbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
-import com.saneesh.psc_kerala.Interfaces.NetworkChangeCallBack;
 
 
 public class NetworkConnection {
@@ -36,21 +34,21 @@ public class NetworkConnection {
             return false;
     }
 
-    public void buildDialog(View view, final NetworkChangeCallBack changeCallBack) {
+    public void buildDialog(View view) {
 
-        Snackbar snackbar = Snackbar.make(view, "Internet disconnected.", 60000)
-                .setAction("GO ONLINE", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        changeCallBack.onGoOnlineTapped();
-                    }
-                });
+        Snackbar snackbar = Snackbar.make(view, "Internet disconnected.", 1000);
+//                .setAction("GO ONLINE", new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        changeCallBack.onGoOnlineTapped();
+//                    }
+//                });
 
         snackbar.setActionTextColor(Color.parseColor("#FFD40700"));
 
         // Changing action button text color
         View sbView = snackbar.getView();
-        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+        TextView textView = (TextView) sbView.findViewById(R.id.snackbar_text);
         textView.setTextColor(Color.parseColor("#FF129417"));
         snackbar.show();
 

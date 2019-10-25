@@ -1,18 +1,15 @@
 package com.saneesh.psc_kerala.Adapters;
 
 import android.content.Context;
-import android.content.Intent;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.saneesh.psc_kerala.Activities.QuestionPaperActivity;
-import com.saneesh.psc_kerala.Interfaces.RetrofitCallBack;
 import com.saneesh.psc_kerala.Model.QuestionPaperHome;
-import com.saneesh.psc_kerala.Model.QuestionsModel;
 import com.saneesh.psc_kerala.R;
 
 import java.util.ArrayList;

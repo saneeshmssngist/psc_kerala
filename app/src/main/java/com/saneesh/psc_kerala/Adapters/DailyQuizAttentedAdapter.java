@@ -1,24 +1,20 @@
 package com.saneesh.psc_kerala.Adapters;
 
 import android.content.Context;
-import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.saneesh.psc_kerala.Model.DailyQuiz;
 import com.saneesh.psc_kerala.R;
-import com.saneesh.psc_kerala.Utils;
 
 import java.util.ArrayList;
-import java.util.Timer;
 
 public class DailyQuizAttentedAdapter extends RecyclerView.Adapter<DailyQuizAttentedAdapter.DailyQuizHolder> {
 

@@ -1,25 +1,18 @@
 package com.saneesh.psc_kerala.Activities;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.InterstitialAd;
-import com.google.android.gms.ads.MobileAds;
 import com.saneesh.psc_kerala.Adapters.MockReviewAdapter;
-import com.saneesh.psc_kerala.Model.QuestionsModel;
 import com.saneesh.psc_kerala.Model.QuizTable;
 import com.saneesh.psc_kerala.R;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 import static com.saneesh.psc_kerala.Base.setStatusBarGradiant;
@@ -49,17 +42,7 @@ public class MockReviewActivity extends BaseActivity {
         setToolBar("Feed back");
         setDatas();
 
-      //  setUpAdmob();
-    }
-
-    private void setUpAdmob() {
-
-        //admob sync..
-        MobileAds.initialize(this,getResources().getString(R.string.APPID));
-
-        adMobView = (AdView) findViewById(R.id.adMobView);
-        adMobView.loadAd(new AdRequest.Builder().build());
-
+        setUpAdmob();
     }
 
     private void getViews() {

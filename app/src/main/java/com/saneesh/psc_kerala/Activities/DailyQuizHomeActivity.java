@@ -2,34 +2,48 @@ package com.saneesh.psc_kerala.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.os.Handler;
+import android.text.TextUtils;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.TextView;
 
-import com.saneesh.psc_kerala.Adapters.DailyQuizAttentedAdapter;
+import com.google.android.material.button.MaterialButton;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.saneesh.psc_kerala.Adapters.DailyQuizHomeAdapter;
-import com.saneesh.psc_kerala.DataManager;
-import com.saneesh.psc_kerala.Interfaces.RetrofitCallBack;
 import com.saneesh.psc_kerala.Model.DailyQuiz;
-import com.saneesh.psc_kerala.NetworkConnection;
+import com.saneesh.psc_kerala.Model.DailyQuizData;
 import com.saneesh.psc_kerala.R;
+import com.saneesh.psc_kerala.Session;
+import com.saneesh.psc_kerala.Utils;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import static com.saneesh.psc_kerala.Base.setStatusBarGradiant;
 
 public class DailyQuizHomeActivity extends BaseActivity {
 
 
-    private RecyclerView recyclerView, recyclerViewOld;
+    private RecyclerView recyclerView;
     private DailyQuizHomeAdapter dailyQuizHomeAdapter;
-    private DailyQuizAttentedAdapter dailyQuizAttentedAdapter;
-    private ArrayList<DailyQuiz> dailyQuizUpArray;
-    private ArrayList<DailyQuiz> dailyQuizOldArray;
-    private TextView txtView;
+    private TextView txtTime, txtTimer, txtTime1, txtTimer1;
+    private CardView cardView, cardView1;
+    private Handler handler = new Handler();
+    private MaterialButton btnStart1, btnStart;
+    private ArrayList<DailyQuizData> dailyQuizData = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +54,26 @@ public class DailyQuizHomeActivity extends BaseActivity {
 
         setToolBar("Daily Quizzes");
         initViews();
+        intiControls();
+
+    }
+
+    private void intiControls() {
+
+        btnStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(DailyQuizHomeActivity.this,DailyQuizActivity.class));
+            }
+        });
+
+        btnStart1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(DailyQuizHomeActivity.this,DailyQuizActivity.class));
+            }
+        });
+
     }
 
 
@@ -51,77 +85,118 @@ public class DailyQuizHomeActivity extends BaseActivity {
 
     private void initViews() {
 
-        txtView = (TextView) findViewById(R.id.txtView);
+        cardView = (CardView) findViewById(R.id.cardView);
+        txtTime = (TextView) findViewById(R.id.txtTime);
+        txtTimer = (TextView) findViewById(R.id.txtTimer);
+
+        cardView1 = (CardView) findViewById(R.id.cardView1);
+        txtTime1 = (TextView) findViewById(R.id.txtTime1);
+        txtTimer1 = (TextView) findViewById(R.id.txtTimer1);
+
+        btnStart = (MaterialButton) findViewById(R.id.btnStart);
+        btnStart1 = (MaterialButton) findViewById(R.id.btnStart1);
+
+
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        recyclerViewOld = (RecyclerView) findViewById(R.id.recyclerViewOld);
-        recyclerViewOld.setHasFixedSize(true);
-        recyclerViewOld.setLayoutManager(new GridLayoutManager(this,2));
+    }
 
-        dailyQuizHomeAdapter = new DailyQuizHomeAdapter(this, new ArrayList<DailyQuiz>(), new DailyQuizHomeAdapter.DailyQuizListener() {
-            @Override
-            public void datilyQuizTapped(int position) {
+    private void setDatas() {
 
-                startActivity(new Intent(DailyQuizHomeActivity.this, DailyQuizActivity.class)
-                        .putExtra("quizUrl", dailyQuizUpArray.get(position).getUrl()));
-            }
-        });
+        setTimeData1();
+        setTimeData2();
+
+        setHistory();
+
+    }
+
+    private void setHistory() {
+
+       dailyQuizData = new Gson().fromJson(Session.getDailyQuizData(), new TypeToken<ArrayList<DailyQuizData>>(){}.getType());
+
+        dailyQuizHomeAdapter = new DailyQuizHomeAdapter(this,dailyQuizData);
         recyclerView.setAdapter(dailyQuizHomeAdapter);
 
-        dailyQuizAttentedAdapter = new DailyQuizAttentedAdapter(this, new ArrayList<DailyQuiz>(), new DailyQuizAttentedAdapter.DailyQuizListener() {
+    }
+
+    private void setTimeData1() {
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.set(Calendar.HOUR_OF_DAY, 18);
+
+        final String date = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(calendar.getTime());
+
+        handler.postDelayed(new Runnable() {
             @Override
-            public void datilyQuizTapped(int position) {
+            public void run() {
 
-                startActivity(new Intent(DailyQuizHomeActivity.this, DailyQuizActivity.class)
-                        .putExtra("quizUrl", dailyQuizOldArray.get(position).getUrl()));
+                String nowDate = Utils.getTimeDifference(date);
+                if (!TextUtils.isEmpty(nowDate)) {
+
+                    txtTimer.setVisibility(View.VISIBLE);
+                    btnStart.setVisibility(View.GONE);
+                    handler.postDelayed(this, 1000);
+
+                } else {
+
+                    txtTimer.setVisibility(View.GONE);
+                    btnStart.setVisibility(View.VISIBLE);
+                    cardView.setAlpha(1);
+
+                    Animation anim = new AlphaAnimation(0.3f, 2.0f);
+                    anim.setDuration(2500); //You can manage the blinking time with this parameter
+                    anim.setStartOffset(20);
+                    anim.setRepeatMode(Animation.REVERSE);
+                    anim.setRepeatCount(Animation.INFINITE);
+                    btnStart.startAnimation(anim);
+
+                }
+
             }
-        });
-        recyclerViewOld.setAdapter(dailyQuizAttentedAdapter);
+        }, 1000);
 
     }
 
-    private void setDatas()
-    {
+    private void setTimeData2() {
 
-        NetworkConnection networkConnection = new NetworkConnection();
-        if (!networkConnection.isConnected(DailyQuizHomeActivity.this)) {
-            startActivity(new Intent(DailyQuizHomeActivity.this, NetworkStateActivity.class));
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.set(Calendar.HOUR_OF_DAY, 22);
 
-        } else {
+        final String date = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(calendar.getTime());
 
-            showProgress();
-            DataManager.getDatamanager().getDailyQuizHomeDatas(new RetrofitCallBack<ArrayList<DailyQuiz>>() {
-                @Override
-                public void Success(ArrayList<DailyQuiz> dailyQuizsArray) {
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
 
-                    hideProgress();
+                String nowDate = Utils.getTimeDifference(date);
+                if (!TextUtils.isEmpty(nowDate)) {
 
-                    dailyQuizUpArray = new ArrayList<>();
-                    dailyQuizOldArray = new ArrayList<>();
+                    txtTimer1.setVisibility(View.VISIBLE);
+                    btnStart1.setVisibility(View.GONE);
 
-                    for (int i = 0; i < dailyQuizsArray.size(); i++) {
+                    handler.postDelayed(this, 1000);
 
-                        if (dailyQuizsArray.get(i).getStatus().contentEquals("0"))
-                            dailyQuizUpArray.add(dailyQuizsArray.get(i));
-                        else
-                            dailyQuizOldArray.add(dailyQuizsArray.get(i));
+                } else {
+                    txtTimer1.setVisibility(View.GONE);
+                    btnStart1.setVisibility(View.VISIBLE);
+                    cardView1.setAlpha(1);
 
-                    }
-                    dailyQuizHomeAdapter.update(dailyQuizUpArray);
-                    dailyQuizAttentedAdapter.update(dailyQuizOldArray);
-                    txtView.setVisibility(View.VISIBLE);
-
+                    Animation anim = new AlphaAnimation(0.3f, 2.0f);
+                    anim.setDuration(2500); //You can manage the blinking time with this parameter
+                    anim.setStartOffset(20);
+                    anim.setRepeatMode(Animation.REVERSE);
+                    anim.setRepeatCount(Animation.INFINITE);
+                    btnStart1.startAnimation(anim);
                 }
 
-                @Override
-                public void Failure(String error) {
-                    hideProgress();
-
-                }
-            });
-        }
+            }
+        }, 1000);
 
     }
+
+
 }

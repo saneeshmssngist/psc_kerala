@@ -3,7 +3,7 @@ package com.saneesh.psc_kerala;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import java.util.ArrayList;
+import org.json.JSONArray;
 
 /**
  * Created by saNeesH on 2018-06-03.
@@ -83,9 +83,32 @@ public class Session {
     }
 
     public static String getUserName() {
-        return sharedPreferences.getString("name","");
+        return sharedPreferences.getString("name", "");
     }
 
+    public static void setChallengeName(String value) {
+        editor.putString("cname", value).apply();
+    }
+
+    public static String getChallengeName() {
+        return sharedPreferences.getString("cname", "");
+    }
+
+    public static void setGender(String value) {
+        editor.putString("gender", value).apply();
+    }
+
+    public static String getGender() {
+        return sharedPreferences.getString("gender", "");
+    }
+
+    public static void setDailyQuizData(String dailyQuizData) {
+        editor.putString("daily_quiz", dailyQuizData).apply();
+    }
+
+    public static String getDailyQuizData() {
+        return sharedPreferences.getString("daily_quiz","[]");
+    }
 
 
 }

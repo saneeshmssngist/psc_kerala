@@ -2,8 +2,8 @@ package com.saneesh.psc_kerala.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -45,23 +45,13 @@ public class QuestionPaperActivity extends BaseActivity {
         getViews();
         initControl();
 
-        //  setUpAdmob();
+        setUpAdmob();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         setDatas();
-    }
-
-    private void setUpAdmob() {
-
-        //admob sync..
-//        MobileAds.initialize(this,getResources().getString(R.string.APPID));
-//
-//        adMobView = (AdView) findViewById(R.id.adMobView);
-//        adMobView.loadAd(new AdRequest.Builder().build());
-
     }
 
     private void getViews() {
@@ -77,6 +67,8 @@ public class QuestionPaperActivity extends BaseActivity {
         generalQuizAdapter = new QuestionPaperAdapter(this, new ArrayList<QuestionsModel>(), tokenNo);
         recyclerViewQuestions.setAdapter(generalQuizAdapter);
 
+        imgLeft.setEnabled(false);
+        imgRight.setEnabled(false);
     }
 
     private void initControl() {
@@ -122,6 +114,10 @@ public class QuestionPaperActivity extends BaseActivity {
             DataManager.getDatamanager().getQuestionPaper(questionPaperHome.getUrl(), new RetrofitCallBack<QuestionPaperHome>() {
                 @Override
                 public void Success(QuestionPaperHome questionPaperData) {
+
+                    imgLeft.setEnabled(true);
+                    imgRight.setEnabled(true);
+
                     questionPaperDatasArray = questionPaperData.getQuestionsModelsArry();
                     setQuestionDatas();
                 }

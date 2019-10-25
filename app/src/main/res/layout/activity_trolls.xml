@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#f4f4f4"
     tools:context=".Activities.TrollsActivity">
 
@@ -12,90 +12,104 @@
         android:layout_width="match_parent"
         android:layout_height="45dp" />
 
-    <com.yuyakaido.android.cardstackview.CardStackView
-        android:id="@+id/cardStack"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        android:gravity="center"
-        android:layout_marginTop="50dp"
-        android:paddingLeft="20dp"
-        android:paddingTop="30dp"
-        android:paddingRight="20dp"
-        android:paddingBottom="60dp"
-        />
-
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginBottom="5dp"
-        android:layout_alignParentBottom="true"
-        android:gravity="center"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="40dp"
         >
 
-        <com.github.florent37.shapeofview.shapes.CircleView
-            android:id="@+id/circleViewRefresh"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_margin="5dp"
-            android:layout_centerHorizontal="true"
-            android:elevation="10dp"
-            android:background="@color/white"
-            >
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_refresh"
-                android:layout_gravity="center"
-                android:background="@color/white"
-                android:padding="7dp"
-                />
-        </com.github.florent37.shapeofview.shapes.CircleView>
+        <com.yuyakaido.android.cardstackview.CardStackView
+            android:id="@+id/cardStack"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="50dp"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:gravity="center"
+            android:paddingLeft="20dp"
+            android:paddingTop="30dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="60dp" />
 
-        <com.github.florent37.shapeofview.shapes.CircleView
-            android:id="@+id/circleViewClose"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginRight="5dp"
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
             android:layout_marginBottom="5dp"
-            android:layout_marginLeft="50dp"
-            android:layout_toRightOf="@+id/circleViewRefresh"
-            android:layout_centerHorizontal="true"
-            android:elevation="10dp"
-            android:background="@color/white"
-            >
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_close"
-                android:layout_gravity="center"
-                android:background="@color/white"
-                android:padding="7dp"
-                />
-        </com.github.florent37.shapeofview.shapes.CircleView>
+            android:gravity="center">
 
+            <com.github.florent37.shapeofview.shapes.CircleView
+                android:id="@+id/circleViewRefresh"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="5dp"
+                android:background="@color/white"
+                android:elevation="10dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:background="@color/white"
+                    android:padding="7dp"
+                    android:src="@drawable/ic_refresh" />
+            </com.github.florent37.shapeofview.shapes.CircleView>
+
+            <com.github.florent37.shapeofview.shapes.CircleView
+                android:id="@+id/circleViewClose"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_toRightOf="@+id/circleViewRefresh"
+                android:background="@color/white"
+                android:elevation="10dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:background="@color/white"
+                    android:padding="7dp"
+                    android:src="@drawable/ic_close" />
+            </com.github.florent37.shapeofview.shapes.CircleView>
+
+
+        </RelativeLayout>
 
     </RelativeLayout>
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adMobView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:adSize="BANNER"
+        app:adUnitId="@string/BANNERID"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        />
+
 
     <LinearLayout
         android:id="@+id/layoutProgress"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:visibility="gone"
-        >
+        android:visibility="gone">
+
         <com.wang.avi.AVLoadingIndicatorView
             android:id="@+id/avilayoutProgress"
+            style="@style/AVLoadingIndicatorView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            style="@style/AVLoadingIndicatorView"
-            app:indicatorName="BallPulseIndicator"
             app:indicatorColor="@color/avLoadingColor"
-            />
+            app:indicatorName="BallPulseIndicator" />
     </LinearLayout>
 
 

@@ -1,15 +1,10 @@
 package com.saneesh.psc_kerala.Activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.widget.LinearLayout;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -17,14 +12,11 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 import com.saneesh.psc_kerala.Adapters.QuestionHomeAdapter;
-import com.saneesh.psc_kerala.Base;
 import com.saneesh.psc_kerala.DataManager;
 import com.saneesh.psc_kerala.Interfaces.RetrofitCallBack;
 import com.saneesh.psc_kerala.Model.QuestionPaperHome;
-import com.saneesh.psc_kerala.Model.QuestionsModel;
 import com.saneesh.psc_kerala.NetworkConnection;
 import com.saneesh.psc_kerala.R;
-import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.ArrayList;
 
@@ -52,8 +44,8 @@ public class QuestionPaperHomeActivity extends BaseActivity {
         setToolBar("Question Papers");
 
         initControl();
+        setUpAdmobs();
 
-//        setUpAdmob();
     }
 
     @Override
@@ -62,7 +54,7 @@ public class QuestionPaperHomeActivity extends BaseActivity {
         setDatas();
     }
 
-    private void setUpAdmob() {
+    private void setUpAdmobs() {
 
         //admob sync..
         MobileAds.initialize(this, getResources().getString(R.string.APPID));
@@ -89,11 +81,26 @@ public class QuestionPaperHomeActivity extends BaseActivity {
 
         questionHomeAdapter = new QuestionHomeAdapter(QuestionPaperHomeActivity.this, new ArrayList<QuestionPaperHome>(), new QuestionHomeAdapter.QuestionsInterface() {
             @Override
-            public void questionTapped(int adapterPosition)
-            {
+            public void questionTapped(final int adapterPosition) {
 
-                startActivity(new Intent(QuestionPaperHomeActivity.this,QuestionPaperActivity.class)
-                .putExtra("questionData",questionPaperArray.get(adapterPosition)));
+                interstitialAd.setAdListener(new AdListener() {
+                    @Override
+                    public void onAdClosed() {
+                        super.onAdClosed();
+                        startActivity(new Intent(QuestionPaperHomeActivity.this, QuestionPaperActivity.class)
+                                .putExtra("questionData", questionPaperArray.get(adapterPosition)));
+
+                        interstitialAd.loadAd(new AdRequest.Builder().build());
+                    }
+                });
+
+                if (interstitialAd.isLoaded()) {
+                    interstitialAd.show();
+                } else {
+
+                    startActivity(new Intent(QuestionPaperHomeActivity.this, QuestionPaperActivity.class)
+                            .putExtra("questionData", questionPaperArray.get(adapterPosition)));
+                }
 
             }
         });
@@ -101,8 +108,7 @@ public class QuestionPaperHomeActivity extends BaseActivity {
 
     }
 
-    public void setDatas()
-    {
+    public void setDatas() {
 
         NetworkConnection networkConnection = new NetworkConnection();
         if (!networkConnection.isConnected(QuestionPaperHomeActivity.this)) {
@@ -130,7 +136,6 @@ public class QuestionPaperHomeActivity extends BaseActivity {
         }
 
     }
-
 
 
 }

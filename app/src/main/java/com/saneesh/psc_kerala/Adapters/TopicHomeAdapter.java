@@ -2,7 +2,7 @@ package com.saneesh.psc_kerala.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,13 +11,10 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.saneesh.psc_kerala.Activities.TopicActivity;
-import com.saneesh.psc_kerala.Activities.TopicHomeActivity;
 import com.saneesh.psc_kerala.Model.TopicModel;
-import com.saneesh.psc_kerala.Model.TopicTable;
 import com.saneesh.psc_kerala.R;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by saNeesH on 2018-07-07.

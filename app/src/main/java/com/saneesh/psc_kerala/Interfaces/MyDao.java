@@ -1,9 +1,5 @@
 package com.saneesh.psc_kerala.Interfaces;
 
-import android.arch.persistence.room.Dao;
-import android.arch.persistence.room.Insert;
-import android.arch.persistence.room.Query;
-
 import com.saneesh.psc_kerala.Model.GeneralModel;
 import com.saneesh.psc_kerala.Model.GeneralTable;
 import com.saneesh.psc_kerala.Model.QuestionTable1;
@@ -13,6 +9,10 @@ import com.saneesh.psc_kerala.Model.TopicTableContent;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.room.Dao;
+import androidx.room.Insert;
+import androidx.room.Query;
 
 /**
  * Created by saNeesH on 2018-07-25.
@@ -35,6 +35,9 @@ public interface MyDao {
 
     @Query("SELECT * FROM `game_all` WHERE `status` = :category ORDER BY random() LIMIT :range")
     List<QuizTable> getMockData(String category,String range);
+
+    @Query("SELECT * FROM `game_all` ORDER BY random() LIMIT 10")
+    List<QuizTable> getRandomData();
 
     //...........................................................................................
 

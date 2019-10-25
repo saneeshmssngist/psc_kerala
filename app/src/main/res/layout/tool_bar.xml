@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/toolBar"
     android:layout_width="match_parent"
     android:layout_height="50dp"
@@ -31,11 +31,12 @@
             android:layout_centerVertical="true"
             android:gravity="center_vertical"
             android:layout_toRightOf="@+id/layoutBack"
-            android:text="dsadsadas"
+            android:text=""
             android:textSize="18sp"
             android:textStyle="bold"
             android:lines="1"
+            android:textColor="@color/white1"
             />
 
 
-</android.support.v7.widget.Toolbar>
+</androidx.appcompat.widget.Toolbar>

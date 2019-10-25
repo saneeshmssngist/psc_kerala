@@ -2,7 +2,6 @@ package com.saneesh.psc_kerala.Activities;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -27,15 +26,18 @@ import com.saneesh.psc_kerala.Model.QuestionsModel;
 import com.saneesh.psc_kerala.Model.QuizTable;
 import com.saneesh.psc_kerala.R;
 import com.saneesh.psc_kerala.RoomDatabaseRoom;
+import com.saneesh.psc_kerala.Session;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.room.Room;
+
 public class HomeActivity extends BaseActivity implements View.OnClickListener {
 
 
-    private RelativeLayout layoutMockTest, layoutRead, layoutQPapers, layoutInfinityQuiz, layoutTopicLearn,
-            layotShareApp, layoutDailyQuiz, layottroll;
+    private RelativeLayout layoutRead, layoutTopic, layoutMock, layoutQuestions, layoutDailyQuiz,
+            layoutPscTroll, layoutInfinityQuiz, layoutOnline, layoutShare;
     private TextView txtView1;
 
     private Context context;
@@ -76,14 +78,22 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
 
     }
 
-    private void setUpAdmob() {
+    private void getViews() {
 
-        //admob sync..
-//        MobileAds.initialize(this, getResources().getString(R.string.APPID));
+//        setToolBarNoBack("");
+
+        layoutMock = (RelativeLayout) findViewById(R.id.layoutMock);
+        layoutRead = (RelativeLayout) findViewById(R.id.layoutRead);
+        layoutQuestions = (RelativeLayout) findViewById(R.id.layoutQuestions);
 //
-//        adMobView = (AdView) findViewById(R.id.adMobView);
-//        adMobView.loadAd(new AdRequest.Builder().build());
+        layoutInfinityQuiz = (RelativeLayout) findViewById(R.id.layoutInfinityQuiz);
+        layoutTopic = (RelativeLayout) findViewById(R.id.layoutTopic);
+        layoutShare = (RelativeLayout) findViewById(R.id.layoutShare);
+        layoutDailyQuiz = (RelativeLayout) findViewById(R.id.layoutDailyQuiz);
+        layoutPscTroll = (RelativeLayout) findViewById(R.id.layoutPscTroll);
+        layoutOnline = (RelativeLayout) findViewById(R.id.layoutOnline);
 
+//        txtView1 = (TextView) findViewById(R.id.txtView1);
     }
 
     private void setAllDatas() {
@@ -164,33 +174,18 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
 
     }
 
-    private void getViews() {
-
-//        setToolBarNoBack("");
-
-        layoutMockTest = (RelativeLayout) findViewById(R.id.layoutMockTest);
-        layoutRead = (RelativeLayout) findViewById(R.id.layoutRead);
-        layoutQPapers = (RelativeLayout) findViewById(R.id.layoutQPapers);
-
-        layoutInfinityQuiz = (RelativeLayout) findViewById(R.id.layoutInfinityQuiz);
-        layoutTopicLearn = (RelativeLayout) findViewById(R.id.layoutTopicLearn);
-        layotShareApp = (RelativeLayout) findViewById(R.id.layotShareApp);
-        layoutDailyQuiz = (RelativeLayout) findViewById(R.id.layoutDailyQuiz);
-        layottroll = (RelativeLayout) findViewById(R.id.layottroll);
-
-        txtView1 = (TextView) findViewById(R.id.txtView1);
-    }
 
     private void initControl() {
 
-        layoutMockTest.setOnClickListener(this);
+        layoutMock.setOnClickListener(this);
         layoutRead.setOnClickListener(this);
         layoutInfinityQuiz.setOnClickListener(this);
-        layoutTopicLearn.setOnClickListener(this);
-        layoutQPapers.setOnClickListener(this);
+        layoutTopic.setOnClickListener(this);
+        layoutQuestions.setOnClickListener(this);
         layoutDailyQuiz.setOnClickListener(this);
-        layottroll.setOnClickListener(this);
-        layotShareApp.setOnClickListener(this);
+        layoutPscTroll.setOnClickListener(this);
+        layoutShare.setOnClickListener(this);
+        layoutOnline.setOnClickListener(this);
 
     }
 
@@ -202,7 +197,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         int id = v.getId();
 
         switch (id) {
-            case R.id.layoutMockTest:
+            case R.id.layoutMock:
                 if (pref.getBoolean("quiz_executed", false))
                     startActivity(new Intent(this, MockHomeActivity.class));
                 break;
@@ -214,19 +209,26 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
                 startActivity(new Intent(this, GeneralHomeActivity.class));
                 break;
 
-            case R.id.layoutTopicLearn:
+            case R.id.layoutTopic:
                 startActivity(new Intent(this, TopicHomeActivity.class));
                 break;
-            case R.id.layoutQPapers:
+            case R.id.layoutQuestions:
                 startActivity(new Intent(this, QuestionPaperHomeActivity.class));
                 break;
             case R.id.layoutDailyQuiz:
                 startActivity(new Intent(this, DailyQuizHomeActivity.class));
                 break;
-            case R.id.layottroll:
+            case R.id.layoutPscTroll:
                 startActivity(new Intent(this, TrollsHomeActivity.class));
                 break;
-            case R.id.layotShareApp:
+            case R.id.layoutOnline:
+                if (Session.getChallengeName().isEmpty())
+                    startActivity(new Intent(this, ChallengeGameMainActivity.class));
+                else
+                    startActivity(new Intent(this, PlayerSelectionActivity.class));
+                break;
+            case R.id.layoutShare:
+
                 shareApp();
                 break;
 
@@ -243,7 +245,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
 
         String message = "P.S.C.  പഠനം ഈസിയാക്കു ......\n" +
                 "( FREE Android Application )\n";
-        message += "https://play.google.com/store/apps/details?id="+getApplication().getPackageName();
+        message += "https://play.google.com/store/apps/details?id=" + getApplication().getPackageName();
 
         intent.putExtra(Intent.EXTRA_TEXT, message);
         startActivity(Intent.createChooser(intent, "Choose one"));

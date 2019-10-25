@@ -1,15 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimaryDark">#f46f62</color>
-    <color name="colorPrimary">#f46f62</color>
-    <color name="colorAccent">#f53522</color>
+<!--    <color name="colorPrimaryDark">#f46f62</color>-->
+<!--    <color name="colorPrimary">#f46f62</color>-->
+<!--    <color name="colorAccent">#f53522</color>-->
+<!--    <color name="master_color">#f53522</color>-->
+<!--    <color name="master_color_light">#f46b5d</color>-->
+
+    <color name="colorPrimaryDark">#0070bc</color>
+    <color name="colorPrimary">#0070bc</color>
+    <color name="colorAccent">#0070bc</color>
+    <color name="master_blue_light">#C7D0EB</color>
+    <color name="master_green">#1F9C04</color>
+    <color name="master_green1">#29804b</color>
+
     <color name="master_color">#f53522</color>
+    <color name="master_color_light">#f46b5d</color>
 
     <color name="purplrDark">#d71f5d</color>
     <color name="purplrDarkLight">#909e026a</color>
     <color name="avLoadingColor">#f46f62</color>
 
     <color name="white">#ffffff</color>
+    <color name="white1">#E9E7E7</color>
     <color name="white_daily">#acb9c9</color>
     <color name="black">#000000</color>
     <color name="black_trasparent">#434343</color>
@@ -29,6 +41,17 @@
     <color name="normal">#a9a9a9</color>
 
     <color name="black_overlay">#66000000</color>
+    <color name="blue_light1">#318FA5</color>
+    <color name="primary_dark">#451263</color>
+
+    <color name="challenge_red">#EB5558</color>
+    <color name="challenge_green">#48CC97</color>
+    <color name="challenge_bg">#747FD8</color>
+    <color name="light_blue">#8578af</color>
+    <color name="grey_text">#90000000</color>
+
+    <color name="red_dark">#ef5350</color>
+    <color name="red_lights">#ffcdd2</color>
 
 
 </resources>

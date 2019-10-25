@@ -5,18 +5,18 @@
     >
 
     <corners
-        android:radius="2dp"
+        android:radius="@dimen/margin_width_30"
         />
 
     <gradient
-        android:startColor="@color/purple"
-        android:centerColor="@color/purple"
-        android:endColor="@color/purple"
+        android:startColor="@color/white"
+        android:centerColor="@color/white"
+        android:endColor="@color/white"
         />
-
     <stroke
+        android:color="@color/black_trasparent"
+
         android:width="1dp"
-        android:color="@color/black"
         />
 
 </shape>

@@ -72,7 +72,7 @@
                 android:padding="5dp"
                 >
 
-                <android.support.v7.widget.CardView
+                <androidx.cardview.widget.CardView
                     android:id="@+id/txtViewQuestionCard"
                     android:layout_width="match_parent"
                     android:layout_height="120dp"
@@ -92,7 +92,7 @@
                         android:textSize="14sp"
                         android:textStyle="bold" />
 
-                </android.support.v7.widget.CardView>
+                </androidx.cardview.widget.CardView>
 
 
                 <LinearLayout
@@ -246,6 +246,16 @@
 
     </LinearLayout>
 
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adMobView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:adSize="BANNER"
+        app:adUnitId="@string/BANNERID"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        />
+
     <LinearLayout
         android:id="@+id/layoutButton"
         android:layout_width="match_parent"
@@ -266,18 +276,6 @@
 
     </LinearLayout>
 
-
-    <com.google.android.gms.ads.AdView
-        android:id="@+id/adMobView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="60dp"
-        android:layout_marginRight="60dp"
-        app:adSize="BANNER"
-        app:adUnitId="@string/BANNERID"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        />
 
     <LinearLayout
         android:id="@+id/layoutProgress"

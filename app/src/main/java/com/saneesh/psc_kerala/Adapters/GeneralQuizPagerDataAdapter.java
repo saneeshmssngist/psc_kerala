@@ -2,15 +2,13 @@ package com.saneesh.psc_kerala.Adapters;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.saneesh.psc_kerala.Activities.GeneralActivity;
 import com.saneesh.psc_kerala.Interfaces.GeneralQuizInterface;
-import com.saneesh.psc_kerala.Interfaces.RetrofitCallBack;
 import com.saneesh.psc_kerala.R;
 
 /**
